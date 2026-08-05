@@ -1,0 +1,346 @@
+/* ══════════════════════════════════════════════════
+   LANDING PAGE — AGENDAMENTO WHATSAPP
+══════════════════════════════════════════════════ */
+
+/* ── Botão WhatsApp. ── */
+body.lp .btn-whatsapp,
+body.lp .hero-cta-mobile,
+body.lp .cta-recruta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-condensed);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  background: #25D366;
+  padding: 16px 34px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.40), 0 0 0 0 rgba(37, 211, 102, 0.45);
+  transition: background 0.3s ease, box-shadow 0.25s ease;
+  animation: ctaWaPulse 2.2s ease-in-out 1.8s infinite;
+}
+body.lp .btn-whatsapp svg,
+body.lp .hero-cta-mobile svg,
+body.lp .cta-recruta-btn svg { width: 18px; height: 18px; fill: #FFFFFF; flex-shrink: 0; }
+
+/* No hover o pulso é interrompido para o botão não "fugir" do cursor;
+   o destaque passa a ser o brilho mais forte, igual ao .whatsapp-float:hover. */
+body.lp .btn-whatsapp:hover,
+body.lp .hero-cta-mobile:hover,
+body.lp .hero-cta-mobile:active,
+body.lp .cta-recruta-btn:hover {
+  background: #1EBE5A !important;
+  animation: none;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px rgba(37, 211, 102, 0.60);
+}
+
+/* Mesma curva do @keyframes waPulse (botão flutuante). A escala é um pouco
+   menor (1.04 em vez de 1.07) porque aqui o botão é retangular e largo —
+   1.07 faria a caixa "saltar" mais de 20px de largura. */
+@keyframes ctaWaPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.40), 0 0 0 0 rgba(37, 211, 102, 0.45);
+  }
+  70% {
+    transform: scale(1.04);
+    box-shadow: 0 8px 26px rgba(37, 211, 102, 0.55), 0 0 0 20px rgba(37, 211, 102, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.40), 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+/* Acessibilidade: quem pede menos movimento não recebe o pulso.
+   O opacity: 1 é obrigatório no CTA do hero, que nasce invisível (fadeUp). */
+@media (prefers-reduced-motion: reduce) {
+  body.lp .btn-whatsapp,
+  body.lp .cta-recruta-btn { animation: none; }
+  body.lp .hero-cta-mobile { animation: none; opacity: 1; }
+}
+
+/* ── BLOCO 1: HERO -- */
+body.lp .hero-cta-mobile {
+  display: inline-flex !important;
+  justify-content: center;
+  min-width: 341px;
+  margin-top: 4px;
+  opacity: 0;
+  /* fadeUp entrega o botão em translateY(0) aos 1.7s; o pulso assume o
+     transform só a partir de 1.8s, então não há salto na transição. */
+  animation: fadeUp 0.8s ease forwards 0.9s, ctaWaPulse 2.2s ease-in-out 1.8s infinite;
+}
+
+/* ── Correção do CTA do hero no hover/toque ── */
+body.lp .hero-cta-mobile:hover,
+body.lp .hero-cta-mobile:active {
+  animation: fadeUp 0.8s ease forwards 0.9s, ctaWaPulse 2.2s ease-in-out 1.8s infinite;
+  animation-play-state: paused;
+  opacity: 1;
+}
+
+/* Texto do botão: por padrão mostra a versão desktop, esconde a mobile */
+body.lp .cta-label-mobile { display: none; }
+body.lp .cta-label-desktop { display: inline; }
+
+/* Logo no lugar do antigo título do hero */
+body.lp .hero-logo {
+  display: block;
+  width: clamp(220px, 28vw, 340px);
+  height: auto;
+  margin: 0 auto 22px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.35s;
+}
+
+/* Slogan "Você Sempre Impecável" — */
+body.lp .hero-slogan {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(52px, 9vw, 96px);
+  line-height: 1.02;
+  color: var(--white);
+  text-align: center;
+  max-width: 100%;
+  margin: 0 0 10px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.5s;
+}
+body.lp .hero-slogan em {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.3em;               /* "Impecável" maior, igual ao institucional */
+  line-height: 1.02;
+  color: #B73736;                 /* vermelho da marca */
+  display: block;                 /* joga "Impecável" para a linha de baixo */
+  text-align: center;
+}
+
+/* Eyebrow ("Barbearia em Pinhais") — agora ABAIXO do slogan, centralizado */
+body.lp .hero-eyebrow {
+  color: var(--white);
+  opacity: 0;
+  text-align: center;
+  margin: 0 0 8px;
+  animation: fadeUp 0.8s ease forwards 0.7s;
+}
+
+/* Subtexto de apoio */
+body.lp .hero-subtext {
+  font-family: var(--font-body);
+  font-size: clamp(16px, 1.5vw, 19px);
+  font-weight: 300;
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.55;
+  color: var(--gray-light);
+  text-align: center;
+  max-width: 520px;
+  margin: 0 auto 6px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+}
+
+/* ── MOBILE  */
+body.lp .hero {
+  align-items: center;
+  justify-content: center;
+  height: auto;              /* deixa o hero crescer se o conteúdo não couber */
+  min-height: 100vh;
+  min-height: 100svh;        /* respeita a barra do navegador no mobile */
+  padding-top: 90px;
+  padding-bottom: 90px;
+}
+body.lp .hero-content {
+  text-align: center;
+  margin: 0 auto;
+  transform: none;
+}
+body.lp .hero-eyebrow,
+body.lp .hero-sub,
+body.lp .hero-subtext,
+body.lp .hero-slogan { text-align: center; margin-left: auto; margin-right: auto; }
+
+@media (min-width: 769px) {
+  /* ── DESKTOP: logo, slogan, eyebrow, subtexto e botão alinhados à ESQUERDA;
+     a foto de fundo volta a respirar do lado direito. ── */
+  body.lp .hero { justify-content: flex-start; padding-top: 40px; padding-bottom: 40px; }
+  body.lp .hero-content {
+    text-align: left;
+    margin: 0;
+    max-width: 760px;
+    padding-left: 8%;
+    padding-right: 4%;
+  }
+  body.lp .hero-logo { margin-left: 0; margin-right: 0; margin-bottom: 14px; width: clamp(200px, 22vw, 280px); }
+  body.lp .hero-eyebrow,
+  body.lp .hero-sub,
+  body.lp .hero-subtext,
+  body.lp .hero-slogan { text-align: left; margin-left: 0; margin-right: 0; }
+  body.lp .hero-slogan em { text-align: left; }
+  body.lp .hero-subtext { margin-bottom: 6px; }
+
+  body.lp .hero-cta-mobile { margin-top: 20px; }
+  /* Remove o indicador "Rolar" apenas no desktop */
+  body.lp .hero-scroll { display: none; }
+}
+
+/* Telas de baixa altura (notebooks 13"–15"): reduz um pouco o slogan e os
+   espaçamentos para o botão caber na dobra sem precisar rolar. */
+@media (min-width: 769px) and (max-height: 880px) {
+  body.lp .hero { padding-top: 28px; padding-bottom: 28px; }
+  body.lp .hero-logo { width: clamp(180px, 18vw, 240px); margin-bottom: 12px; }
+  body.lp .hero-slogan { font-size: clamp(44px, 6.4vw, 72px); margin-bottom: 6px; }
+  body.lp .hero-eyebrow { margin-bottom: 6px; }
+  body.lp .hero-subtext { font-size: 17px; margin-bottom: 4px; }
+  body.lp .hero-cta-mobile { margin-top: 16px; }
+}
+@media (max-width: 768px) {
+  /* ── BLOCO 1: HERO no MOBILE ── */
+  body.lp .hero {
+    align-items: stretch !important;   /* !important vence o .home .hero do style.css */
+    padding-top: calc(30px + env(safe-area-inset-top));
+    padding-bottom: 92px;              /* espaço para o indicador "Rolar" */
+  }
+  body.lp .hero-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  body.lp .hero-logo {
+    margin: 0 auto 32px;   /* respiro MÍNIMO garantido até o slogan */
+    flex-shrink: 0;
+  }
+  body.lp .hero-slogan   { margin-top: auto; }
+  body.lp .hero-cta-mobile { margin-bottom: auto; align-self: center; }
+
+  body.lp .hero-cta-mobile { margin-top: 4px; }
+  body.lp .hero-cta-mobile { min-width: 0; width: 100%; max-width: 341px; }
+  /* Texto do botão maior e mais visível no mobile */
+  body.lp .cta-label-desktop { display: none; }
+  body.lp .cta-label-mobile { display: inline; font-size: 16px; letter-spacing: 2px; }
+  body.lp .hero-cta-mobile { padding-top: 18px; padding-bottom: 18px; }
+}
+
+/* ── BLOCO 3: SOBRE NÓS — imagem ── */
+body.lp #historia .historia-img-wrap img {
+  object-fit: cover;
+  object-position: center center;
+}
+
+/* Moldura da foto: carrega a sombra e os cantos arredondados, e recorta a
+   imagem no raio da borda (overflow: hidden). */
+body.lp #historia .historia-img-frame {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  line-height: 0;          /* elimina o espaço extra abaixo da imagem */
+}
+body.lp #historia .historia-img-frame img {
+  border-radius: 0;        /* o arredondamento é da moldura */
+  /* filter: blur(2px); */
+  /* transform: scale(1.05); */
+}
+
+/* ── BLOCO 3: SOBRE NÓS (História) — botão "Quero conhecer o Clube", centralizado
+   na tela, do mesmo jeito que o botão do Hero fica no mobile. ── */
+body.lp #historia .historia-text { text-align: left; }
+
+/* Botão "Quero conhecer o Clube": no desktop acompanha o alinhamento do texto
+   (mesma margem esquerda dos parágrafos); no mobile permanece centralizado. */
+body.lp #historia .historia-cta {
+  text-align: center;
+  margin-top: 24px;
+}
+@media (min-width: 769px) {
+  body.lp #historia .historia-cta { text-align: left; }
+}
+
+/* Botão do Sobre Nós com o MESMO tamanho do botão do Hero:
+   min-width 341px no desktop; largura fluida com teto de 341px e padding
+   vertical de 18px no mobile — exatamente os valores de .hero-cta-mobile. */
+body.lp #historia .btn-whatsapp {
+  min-width: 341px;
+  justify-content: center;
+}
+@media (max-width: 768px) {
+  body.lp #historia .btn-whatsapp {
+    min-width: 0;
+    width: 100%;
+    max-width: 341px;
+    padding: 18px 24px;   /* caixa idêntica; só o respiro interno é menor,
+                             porque o rótulo aqui é mais longo */
+  }
+}
+
+/* ── BLOCO 4: DEPOIMENTOS — */
+body.lp #carouselDepoimentos .carousel-controls {
+  justify-content: center;
+}
+body.lp .cta-depoimentos {
+  margin: 28px auto 0;      /* mesmo 28px de margin-top das setas */
+  min-width: 341px;         /* mesma largura do botão do Hero no desktop */
+  justify-content: center;
+  white-space: nowrap;
+}
+/* O wrapper do carrossel tem overflow: hidden (necessário para o deslize
+   horizontal). Sem este respiro, o anel do pulso seria cortado embaixo. */
+body.lp #carouselDepoimentos { padding-bottom: 26px; }
+
+@media (max-width: 768px) {
+  /* Entre as setas o espaço é curto: o botão encolhe e as setas cedem o gap. */
+  body.lp #carouselDepoimentos .carousel-controls { gap: 6px; }
+  body.lp .cta-depoimentos {
+    min-width: 0;
+    flex: 0 1 auto;
+    padding: 16px 16px;
+    font-size: 12px;
+    letter-spacing: 1.4px;
+    gap: 8px;
+  }
+  body.lp .cta-depoimentos svg { width: 16px; height: 16px; }
+}
+
+/* ── BLOCO 5: AGENDAMENTO — */
+@media (max-width: 860px) {
+  body.lp .cta-recruta-img {
+    flex: 0 0 auto;
+    width: 100%;
+    aspect-ratio: 377 / 496;   /* proporção exata de fachada-hebreus.jpg */
+  }
+  body.lp .cta-recruta-img img {
+    height: 100%;
+    object-fit: contain;       /* garantia: se a foto for trocada por outra
+                                  de proporção diferente, ela ainda aparece
+                                  inteira, com o fundo navy preenchendo */
+    object-position: center;
+  }
+}
+
+/* O painel navy é um flex column; o institucional usa align-self: flex-start
+   no botão. Aqui ele fica centralizado dentro do card. */
+body.lp .cta-recruta-btn {
+  align-self: center;
+  justify-content: center;
+}
+
+/* ── BLOCO 6: FOOTER — grid com 3 colunas (Logo | Institucional | Redes Sociais) ── */
+@media (min-width: 769px) {
+  body.lp footer .footer-grid { grid-template-columns: 2fr 1fr 1fr !important; }
+}
+
+/* Ícones de redes sociais no footer com um pouco mais de destaque na LP */
+body.lp footer .footer-social .social-link {
+  width: 48px;
+  height: 48px;
+}

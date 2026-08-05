@@ -1,0 +1,5560 @@
+/* ── FONTE YOUNG HEART (com acentos do português incluídos) ── */
+@font-face {
+  font-family: 'Young Heart';
+  src: url('fonts/Young_Heart.woff2') format('woff2'),
+       url('fonts/Young_Heart.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+ :root {
+  /* DESTAQUES (Agora Branco e Cinza Prateado) */
+  --gold: #FFFFFF; /* Destaques principais e botões em Branco puro */
+  --gold-light: #E2E8F0; /* Cinza "gelo" bem claro para efeitos de hover */
+  --gold-dark: #94A3B8; /* Cinza prateado para linhas e detalhes sutis */
+
+  /* FUNDOS PRINCIPAIS (O Azul Marinho que você gostou) */
+  --black: #0D1F3C; 
+  --dark: #091528; /* Um tom de azul marinho quase preto para alternar as seções */
+
+  /* CARDS E CAIXAS (Azul marinho levemente mais claro para destacar do fundo) */
+  --dark2: #162B4D; 
+  --dark3: #1E3860; 
+
+  /* TEXTOS */
+  --gray: #94A3B8; /* Cinza médio para textos de leitura longa */
+  --gray-light: #CBD5E1; /* Cinza claro para subtítulos e descrições curtas */
+  --white: #FFFFFF;
+  --white-pure: #FFFFFF;
+
+  /* TIPOGRAFIA (Mantida) */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Barlow', sans-serif;
+  --font-condensed: 'Barlow Condensed', sans-serif;
+}
+
+  html { 
+    scroll-behavior: smooth;
+    background-color: #0E1E2C; /* mesma cor da navbar/footer — evita azul estranho no overscroll do Safari */
+  }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dark); }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+/* ── NAVBAR ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%; 
+  
+  height: 72px;
+  background: #0E1E2C; /* Azul da marca escurecido (#00293C) — destaca a logo */
+  backdrop-filter: blur(16px);
+  border-bottom: 2px solid #B73736; /* Contorno inferior no vermelho da marca */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  
+  transition: all 0.4s ease;
+}
+
+nav.scrolled {
+  height: 64px;
+}
+
+/* ── LOGO NO CABEÇALHO ── */
+.nav-logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-left: 0;
+  flex-shrink: 0;
+}
+
+  /* ── REMOVE O FUNDO CINZA DO LINK DA LOGO ── */
+.nav-logo:hover .logo-img {
+  /* Mantemos o crescimento sutil */
+  transform: scale(1.06);
+  
+  /* FORÇAMOS o brilho a ser APENAS BRANCO PURE (rgba(255, 255, 255)) */
+  /* Aumentei um pouco a opacidade (0.6) para ele "vencer" qualquer cor intrusa */
+  filter: none !important; 
+}
+
+.logo-img {
+  height: 38px; /* Logo menor, mais discreta na barra */
+  width: auto;
+  
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              height 0.4s ease;
+  
+  object-fit: contain;
+}
+
+/* Encolhe suavemente quando a navbar diminui no scroll (mantém respiro) */
+nav.scrolled .logo-img {
+  height: 35px;
+}
+
+/* ── EFEITO HOVER SÚTIL (Atualizado) ── */
+.nav-logo:hover .logo-img {
+  /* Efeito 1: Cresce quase imperceptivelmente (apenas 2%) */
+  transform: scale(1.03); 
+  
+  /* Efeito 2: Brilho muito mais suave e discreto */
+  filter: drop-shadow(0 0 12px); /* Brilho menor e mais transparente */
+}
+
+/* ── AJUSTES DO BOTÃO AGENDAR NO MENU ── */
+.nav-links > li > a.nav-cta {
+  color: var(--black); /* Garante que o texto fique escuro (Azul Marinho) */
+  padding: 14px 32px; /* Garante o formato do botão, sobrepondo o padding dos links */
+}
+
+/* Mantém a cor da fonte escura no hover e aplica o preenchimento prata/branco */
+.nav-links > li > a.nav-cta:hover {
+  color: var(--black);
+  background: var(--gold-light); /* O Cinza Prateado claro que definimos no :root */
+}
+
+/* Remove a linha de baixo animada apenas do botão Agendar */
+.nav-links > li > a.nav-cta::after {
+  display: none;
+}
+
+/* ── BOTÃO SERVIÇOS (Moldura Branca) ── */
+#servicosToggle {
+  background-color: #B73736 !important; /* Fundo no vermelho da marca */
+  color: #ffffff !important; /* Texto branco */
+  font-size: 18px; /* Texto MENU um pouco maior */
+  
+  /* Ajustes para ficar com cara de botão */
+  padding: 10px 22px; 
+  border-radius: 6px; /* Bordas arredondadas combinando com o botão Agendar */
+  
+  /* Garante que o texto e a setinha fiquem alinhados */
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Dá um espacinho entre a palavra "Serviços" e a seta */
+  
+  transition: all 0.3s ease;
+}
+
+/* Remove o efeito de sublinhado animado apenas deste botão */
+#servicosToggle::after {
+  display: none;
+}
+
+/* ── ÍCONE DAS 3 BARRAS (desenhado via CSS, usado no desktop e no mobile) ── */
+.menu-bars {
+  display: inline-block;
+  position: relative;
+  width: 20px;            /* largura das barras (igual à referência) */
+  height: 2px;            /* espessura de cada barra */
+  background: #ffffff;    /* barra do meio */
+  border-radius: 2px;
+  flex-shrink: 0;
+  transition: background 0.3s ease, width 0.3s ease;
+}
+.menu-bars::before,
+.menu-bars::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+  transition: top 0.3s ease, transform 0.3s ease;
+}
+.menu-bars::before { top: -6px; }  /* barra de cima */
+.menu-bars::after  { top: 6px; }   /* barra de baixo */
+
+/* Efeito Hover: preenche de branco e muda a letra para o Azul Marinho */
+#servicosToggle:hover {
+  background-color: #9E2F2E !important; /* Vermelho um pouco mais escuro no hover */
+  transform: translateY(-2px); /* Dá aquele mesmo pulinho do botão Agendar */
+}
+
+/* Garante que a setinha do menu mude de cor para Azul Marinho no hover junto com o texto */
+#servicosToggle:hover .nav-arrow,
+.nav-links > li.open > #servicosToggle .nav-arrow {
+  border-top-color: #ffffff;
+}
+
+  /* Links */
+  .nav-links { 
+  display: flex; 
+  align-items: center;
+  gap: 10px; /* Aumentado de 32px para um visual mais espaçado e clean */
+  list-style: none; 
+  height: 100%
+}
+
+.nav-links > li > a {
+  font-family: var(--font-condensed);
+  font-size: 16px; /* Aumentado de 13px */
+  font-weight: 600; /* Fonte mais marcante (era 500) */
+  letter-spacing: 3px; /* Aumentado de 2px */
+  text-transform: uppercase;
+  color: var(--gray-light);
+  text-decoration: none;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 0;
+  position: relative; /* Necessário para o efeito de hover abaixo */
+}
+
+.nav-links > li > a:hover,
+.nav-links > li.active > a { 
+  color: var(--white); 
+}
+
+/* Novo Efeito de Hover (Sublinhado elegante) */
+.nav-links > li > a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+
+.nav-links > li > a:hover::after,
+.nav-links > li.active > a::after {
+  width: 100%;
+}
+
+  /* Seta dropdown */
+  .nav-arrow {
+    display: inline-block;
+    width: 0; height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+    margin-top: 1px;
+    transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+/* A ÂNCORA: Garante que o menu não fuja para a esquerda da tela */
+#navServicos {
+  position: relative !important; 
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+  /* Dropdown */
+/* O MENU ESCONDIDO */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;   
+  background-color: #0E1E2C;
+  min-width: 240px; 
+  padding: 15px 0;
+  border-top: 3px solid #B73736; 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  
+  /* Escondido por padrão */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease-in-out;
+}
+
+/* ── A MÁGICA ACONTECE AQUI (A classe que o JS vai ativar) ── */
+.nav-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+/* 4. ESTILO DOS LINKS DENTRO DO DROPDOWN */
+.nav-dropdown a {
+  padding: 12px 25px !important;
+  color: var(--gray-light) !important;
+  font-family: var(--font-condensed) !important;
+  font-size: 15px !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  background: transparent !important;
+  transition: all 0.3s ease;
+}
+/* Efeito ao passar o mouse em cada serviço da lista */
+.nav-dropdown a:hover {
+  color: var(--white) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  padding-left: 30px !important;
+}
+  /* CTA branco */
+.nav-cta {
+  /* Estado Inicial (Fantasma/Transparente) */
+  background: transparent !important;
+  color: var(--white) !important;
+  border: 1px solid var(--white) !important; /* Borda fina e elegante */
+
+  border-radius: 6px !important; 
+  
+  padding: 4px 12px;
+  font-size: 12px !important;
+
+
+  /* Ajustes de tipografia e espaçamento */
+  padding: 12px 28px;
+  font-family: var(--font-condensed);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-decoration: none;
+  
+  /* Transição suave para o efeito do mouse */
+  transition: all 0.4s ease !important;
+}
+
+.nav-cta:hover {
+  /* Gradiente elegante do branco puro para um prata suave */
+  background: linear-gradient(135deg, #ffffff 0%, #d4d4d4 100%) !important;
+  
+  /* O texto precisa ficar da cor do fundo do cabeçalho para ter contraste */
+  color: #0D1F3C !important; 
+  
+  border-color: #ffffff !important;
+  
+  /* Leve empurrãozinho para cima com sombra brilhante */
+  transform: translateY(-2px) !important;
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2) !important;
+}
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+    background: none;
+    border: none;
+  }
+
+  .mobile-menu {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(320px, 85vw);
+    background: #0E1E2C;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 999;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+    padding: 80px 40px 40px;
+    
+    /* Animação: começa fora da tela pela esquerda */
+    transform: translateX(-100%);
+    transition: transform 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    /* Overlay escuro atrás */
+    box-shadow: 4px 0 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .mobile-menu.open {
+    transform: translateX(0);
+  }
+
+  /* Overlay escuro que cobre o resto da tela quando o menu está aberto */
+  .mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.38s ease;
+  }
+
+  .mobile-menu-overlay.open {
+    display: block;
+    opacity: 1;
+  }
+
+  .mobile-menu a {
+    font-family: var(--font-condensed);
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-light);
+    text-decoration: none;
+    transition: color 0.2s, padding-left 0.2s;
+    padding: 10px 0;
+    width: 100%;
+    display: block;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .mobile-menu a:last-of-type {
+    border-bottom: none;
+  }
+
+  .mobile-menu a:hover {
+    color: var(--white);
+    padding-left: 6px;
+  }
+
+  /* Divisor visual entre itens do menu e botões CTA */
+  .mobile-menu-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, rgba(255,255,255,0.15), transparent);
+    margin: 12px 0;
+  }
+
+  /* Links de CTA (Assine e Agendar) — fundo vermelho da marca */
+  .mobile-link-cta {
+    display: inline-block;
+    width: auto;
+    background: #B73736 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #B73736 !important;
+    border-radius: 6px !important;
+    padding: 12px 26px !important;
+    margin-top: 12px;
+    font-family: var(--font-condensed);
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase;
+    text-align: center;
+    transition: all 0.3s ease !important;
+  }
+
+  .mobile-link-cta:hover {
+    background: #9E2F2F !important;
+    color: #FFFFFF !important;
+    border-color: #9E2F2F !important;
+  }
+
+  /* Redes sociais no menu lateral mobile (abaixo dos botões) */
+  .mobile-social {
+    display: flex;
+    gap: 14px;
+    margin-top: 22px;
+    width: 100%;
+  }
+  .mobile-social a {
+    width: 46px !important;
+    height: 46px;
+    padding: 0 !important;
+    margin: 0;
+    border: 1px solid rgba(255,255,255,0.25) !important;
+    border-radius: 8px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  .mobile-social a:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: #ffffff !important;
+    padding-left: 0 !important;
+  }
+  .mobile-social img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+  }
+
+  /* ── HERO ── */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--black);
+  padding-bottom: 80px;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  /* Gradiente lateral restaurado, usando o Azul Marinho (rgba: 13, 31, 60) */
+  background: 
+    linear-gradient(105deg, rgba(0,45,66,1) 40%, rgba(0,45,66,0.3) 100%),
+    url(img_hebreus/agustin-fernandez-1Pmp9uxK8X8-unsplash.jpg) center/cover no-repeat;
+}
+
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--black) 0%, transparent 40%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 100px 6% 0 6%;
+  max-width: 780px;
+  text-align: left;
+  margin: 0;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-condensed);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold); /* Puxa o seu novo Vermelho automaticamente */
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.3s;
+}
+
+.hero-title {
+  /* (1.2 / 1.3) Fonte da marca (Young Heart) aplicada ao título de TODAS as páginas */
+  font-family: 'Young Heart', var(--font-display);
+  font-size: clamp(60px, 13vw, 124px);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.02;
+  margin-bottom: 16px;
+  color: var(--white);
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.5s;
+}
+
+.hero-title em {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.3em;        /* palavra de destaque maior, igual à index */
+  color: #B73736;          /* palavra em vermelho da marca */
+  display: block;
+}
+
+/* ── HERO DA INDEX (bloco 1): título em Young Heart, ordem e tamanhos ── */
+.home .hero-title {
+  font-family: 'Young Heart', var(--font-display); /* todo o título na Young Heart */
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(60px, 13vw, 124px); /* maior, no tamanho da referência */
+  line-height: 1.02;
+  margin-bottom: 16px;
+}
+.home .hero-title em {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;        /* peso natural da fonte (evita negrito sintético) */
+  font-style: normal;
+  font-size: 1.3em;        /* "Impecável" maior que "Você Sempre" */
+  color: #B73736;          /* palavra "Impecável" em vermelho da marca */
+}
+/* Eyebrow agora vem ABAIXO do título; subtítulo por último */
+.home .hero-eyebrow { margin: 0 0 6px; }
+.home .hero-sub { margin-top: 12px; }
+/* Move todo o conteúdo do hero um pouco para baixo */
+.home .hero-content { transform: translateY(8vh); }
+
+/* ── BLOCO 3 (CLUBE VIP): fundo vermelho + "Hebreus VIP" em Young Heart/azul ── */
+#clube { background-color: #ffffff; }
+#clube .section-title em {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  color: #003A55;          /* "Hebreus VIP" no azul da marca */
+  display: block;          /* joga "Hebreus VIP" para a linha de baixo */
+  font-size: 1.9em;        /* maior, em destaque */
+  line-height: 1.05;
+  margin-top: 4px;
+}
+
+/* CLUBE VIP — mesmo visual do bloco da INDEX em qualquer página
+   (index e Hebreus VIP): título uniforme em Young Heart branco. */
+#clube .section-title {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(40px, 6vw, 68px);
+  line-height: 1.05;
+}
+#clube .section-title em {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1em;
+  display: inline;
+  margin: 0;
+  color: #FFFFFF;
+}
+@media (min-width: 992px) {
+  #clube {
+    align-items: flex-start;
+    padding-top: 130px;
+    padding-bottom: 80px;
+  }
+}
+
+.hero-sub {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--gray-light);
+  line-height: 1.8;
+  max-width: 480px;
+  margin-top: 24px;
+  margin-bottom: 44px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.7s;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.9s;
+  justify-content: flex-start; /* Garante os botões à esquerda */
+}
+
+/* CTA "Agendar Agora" do hero — exclusivo do MOBILE.
+   No desktop fica oculto, pois o CTA já existe na navbar. */
+.hero-cta-mobile { display: none; }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards 1.5s;
+}
+
+.hero-scroll span {
+  font-family: var(--font-condensed);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 1.8s ease-in-out infinite;
+}
+
+.btn-primary {
+    font-family: var(--font-condensed);
+    font-size: 13px;
+    font-weight: 700; /* Texto em negrito */
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold); /* Como configurado no :root, isso é o branco puro */
+    padding: 16px 36px;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid transparent;
+    
+    /* Transição um pouco mais lenta (0.4s) para a suavidade máxima */
+    transition: all 0.4s ease; 
+    
+    /* Sombra escura bem leve no estado normal para desgrudar do fundo */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); 
+  }
+
+  .btn-primary:hover { 
+    background: #FFFFFF;
+    color: var(--black);
+    
+    /* Pulo mínimo, apenas para dar a sensação tátil */
+    transform: translateY(-1px); 
+    
+    /* Brilho branco extremamente suave e espalhado */
+    box-shadow: 0 4px 25px rgba(255, 255, 255, 0.15); 
+  }
+  
+.btn-outline {
+    font-family: var(--font-condensed);
+    font-size: 13px;
+    font-weight: 700; /* Texto em negrito */
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--black); /* Texto escuro desde o início */
+    background: var(--gold); /* Fundo branco (sua cor --gold no :root) desde o início */
+    padding: 16px 36px;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid transparent; /* Sem borda, igual ao primário */
+    
+    /* Transição suave de 0.4s */
+    transition: all 0.4s ease; 
+    
+    /* Sombra escura bem leve no estado normal */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); 
+  }
+
+  .btn-outline:hover { 
+    background: #FFFFFF; /* Mantém o fundo branco */
+    color: var(--black); /* Mantém o texto escuro */
+    
+    /* O mesmo pulo mínimo de -1px */
+    transform: translateY(-1px); 
+    
+    /* O mesmo brilho branco extremamente suave e espalhado */
+    box-shadow: 0 4px 25px rgba(255, 255, 255, 0.15); 
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 1.5s;
+  }
+  .hero-scroll span {
+    font-family: var(--font-condensed);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 1.8s ease-in-out infinite;
+  }
+
+  /* ── NUMBERS STRIP ── */
+  .numbers-strip {
+    background: var(--dark2);
+    border-top: 1px solid rgba(201,168,76,0.2);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 48px 8%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .number-item {
+    text-align: center;
+    padding: 0 20px;
+    border-right: 1px solid rgba(255,255,255,0.07);
+  }
+  .number-item:last-child { border-right: none; }
+  .number-val {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .number-label {
+    font-family: var(--font-condensed);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+  /* Símbolos da prova social (+, %, ★): menores, mas mesma fonte/peso do número */
+  .number-sym {
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: 0.5em;
+    vertical-align: baseline;
+    margin-left: 1px;
+  }
+
+  /* ── SECTION COMMONS ── */
+  section { position: relative; }
+  .section-inner { padding: 120px 8%; }
+
+  .eyebrow {
+    font-family: var(--font-condensed);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: block;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4.5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-body {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--gray-light);
+    line-height: 1.9;
+    max-width: 560px;
+  }
+
+/* COMPORTAMENTO PADRÃO (CELULARES) - Rolagem natural */
+section, footer {
+  position: relative;
+  padding: 60px 0;
+}
+
+@media (min-width: 992px) {
+  html { 
+    scroll-behavior: smooth; 
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 0;
+  }
+  
+  section {
+    position: relative;
+    min-height: 100vh; 
+    padding: 100px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .section-inner { 
+    padding: 0px 8%;
+    width: 100%;
+  }
+
+  footer {
+    min-height: auto;
+    padding: 60px 8% 40px;
+    display: block; 
+  }
+
+  nav {
+    padding: 0 8%;
+    height: 90px;
+  }
+
+  nav.scrolled {
+    height: 72px;
+  }
+
+  .logo-img {
+    height: 80px;
+  }
+
+  nav.scrolled .logo-img {
+    height: 64px;
+  }
+
+  .hero-content {
+    padding: 120px 8% 0 8%;
+  }
+
+  /* Desktop: deslocamento menor pra não cortar o subtítulo (título grande já preenche a tela) */
+  .home .hero-content {
+    transform: translateY(3vh);
+  }
+}
+
+  /* ── ABOUT ── */
+  #sobre { background: var(--dark); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-img-wrap {
+    position: relative;
+  }
+  .about-img-wrap img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    display: block;
+  }
+  .about-img-wrap::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: 20px;
+    bottom: 20px;
+    border: 1px solid rgba(201,168,76,0.3);
+    z-index: -1;
+  }
+  .about-badge {
+    position: absolute;
+    bottom: -24px;
+    right: -24px;
+    width: 100px;
+    height: 100px;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .about-badge strong {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--black);
+    line-height: 1;
+  }
+  .about-badge span {
+    font-family: var(--font-condensed);
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--black);
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .about-text { display: flex; flex-direction: column; gap: 28px; }
+  .about-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    border-left: 2px solid var(--gold);
+    background: rgba(201,168,76,0.04);
+  }
+  .about-detail-icon {
+    font-size: 22px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .about-detail p { font-size: 15px; font-weight: 300; color: var(--gray-light); line-height: 1.7; }
+  .about-detail p strong { color: var(--white); font-weight: 500; }
+
+  /* ── SERVICES ── */
+  #servicos { background: var(--black); }
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+    gap: 40px;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .service-card {
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+  }
+  .service-card img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease, filter 0.4s;
+    filter: brightness(0.75) saturate(0.7);
+  }
+  .service-card:hover img { transform: scale(1.06); filter: brightness(0.6) saturate(0.5); }
+  .service-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.92) 30%, transparent 70%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px 28px;
+  }
+  .service-card-num {
+    font-family: var(--font-condensed);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.35s ease;
+  }
+  .service-card:hover .service-card-num { opacity: 1; transform: translateY(0); }
+  .service-card-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .service-card-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray-light);
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.35s ease 0.05s;
+  }
+  .service-card:hover .service-card-desc { opacity: 1; transform: translateY(0); }
+  .service-card-price {
+    font-family: var(--font-condensed);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-top: 12px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.35s ease 0.1s;
+  }
+  .service-card:hover .service-card-price { opacity: 1; transform: translateY(0); }
+
+  /* ── CLUB / ASSINATURA ── */
+  #clube {
+    background: #B73736;
+    overflow: hidden;
+  }
+  .clube-inner {
+    padding: 120px 8%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .plans-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .plan-card {
+    padding: 32px 24px;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: var(--dark2);
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .plan-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-4px); }
+  .plan-card.featured {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.04));
+    grid-column: 1 / -1;
+  }
+  .plan-badge {
+    position: absolute;
+    top: -1px;
+    right: 20px;
+    background: var(--gold);
+    font-family: var(--font-condensed);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--black);
+    padding: 4px 12px;
+    font-weight: 600;
+  }
+  .plan-name {
+    font-family: var(--font-condensed);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .plan-price {
+    font-family: var(--font-display);
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .plan-price span {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--gray);
+    font-weight: 300;
+  }
+  .plan-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray-light);
+    line-height: 1.6;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .plan-features {
+    list-style: none;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .plan-features li {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .plan-features li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background: var(--gold);
+    flex-shrink: 0;
+    transform: rotate(45deg);
+  }
+  .clube-text { display: flex; flex-direction: column; gap: 32px; }
+
+  /* ── DIVIDER ── */
+  .gold-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    opacity: 0.3;
+  }
+
+  /* ── QUOTE BANNER ── */
+  .quote-banner {
+    background: var(--gold);
+    padding: 72px 8%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-banner::before {
+    content: '"';
+    position: absolute;
+    top: -40px;
+    left: 5%;
+    font-family: var(--font-display);
+    font-size: 300px;
+    color: rgba(0,0,0,0.08);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .quote-text {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.5vw, 44px);
+    font-weight: 700;
+    color: var(--black);
+    line-height: 1.2;
+    max-width: 800px;
+    margin: 0 auto 20px;
+    position: relative;
+  }
+  .quote-author {
+    font-family: var(--font-condensed);
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--dark2);
+  }
+
+  /* ── TESTIMONIALS ── */
+  #depoimentos { background: var(--dark); }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+  .testimonial-card {
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: var(--dark2);
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .testimonial-card:hover { border-color: rgba(201,168,76,0.25); }
+  .testimonial-card::before {
+    content: none;
+    font-family: var(--font-display);
+    font-size: 80px;
+    color: var(--gold);
+    opacity: 0.3;
+    position: absolute;
+    top: 12px;
+    left: 24px;
+    line-height: 1;
+  }
+  .stars {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 20px;
+    margin-top: 8px;
+  }
+  .star {
+    width: 12px;
+    height: 12px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+  .testimonial-text {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--gray-light);
+    line-height: 1.8;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .author-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--gold-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+  .author-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;   /* recorta a foto sem distorcer */
+  display: block;
+}
+  .author-name {
+    font-family: var(--font-condensed);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .author-since {
+    font-size: 12px;
+    color: var(--gray);
+  }
+
+  /* ── FAQ ── */
+/* ── FAQ HEBREUS VIP ── */
+#faq {
+  background: #B73736;
+  padding: 40px 24px;   /* vermelho aparece em cima, baixo e laterais como moldura */
+}
+
+/* Container centralizado com fundo da navbar/footer */
+.faq-inner {
+  background: #0E1E2C;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 72px 56px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Marca d'água "HEBREUS" sobre o fundo vermelho da section */
+#faq {
+  position: relative;
+  overflow: hidden;
+}
+
+#faq::before {
+  content: 'HEBREUS';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(80px, 18vw, 240px);
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+  letter-spacing: 10px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Título — centralizado */
+.faq-heading {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(40px, 6vw, 68px);
+  color: #FFFFFF;
+  line-height: 1.1;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.faq-heading em {
+  font-style: normal;
+  color: #B73736;
+}
+
+/* Lista de cards */
+.faq-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Card individual — cada pergunta é um bloco azul */
+.faq-card {
+  background: #003A55;
+  border: none;
+  padding: 0;
+}
+
+/* Linha da pergunta — padding generoso, ícone à direita */
+.faq-card .faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 28px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  color: #FFFFFF;          /* 2 — branco puro */
+  transition: color 0.2s;
+  gap: 20px;
+  border-bottom: none;
+}
+
+.faq-card .faq-q:hover {
+  color: #FFFFFF;
+}
+
+.faq-card.open .faq-q {
+  color: #FFFFFF;
+}
+
+/* Ícone + / − */
+.faq-card .faq-icon {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 22px;
+  font-weight: 300;
+  color: #B73736;
+  line-height: 1;
+  transition: transform 0.3s ease, color 0.2s;
+}
+
+.faq-card.open .faq-icon {
+  color: #FFFFFF;
+  transform: rotate(45deg);
+}
+
+/* Resposta — expande dentro do card com transição suave */
+.faq-card .faq-a {
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.8;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity   0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+              padding   0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0 28px;
+}
+
+.faq-card.open .faq-a {
+  max-height: 400px;
+  opacity: 1;
+  transform: translateY(0);
+  padding: 0 28px 24px;
+}
+
+/* Footer VIP — mesmo fundo e estrutura da navbar/index */
+.footer-vip {
+  background: #0E1E2C;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 72px 8% 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* footer-bottom centralizado (variação do VIP) */
+.footer-bottom-centered {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+}
+
+/* Mobile — moldura vermelha visível nas laterais */
+@media (max-width: 768px) {
+  #faq {
+    padding: 28px 16px;
+  }
+  .faq-inner {
+    padding: 40px 20px 48px;
+  }
+  .faq-card .faq-q {
+    padding: 18px 20px;
+    font-size: 15px;
+  }
+  .faq-card .faq-a {
+    padding: 0 20px;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity   0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+                padding   0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .faq-card.open .faq-a {
+    padding: 0 20px 20px;
+  }
+  .footer-vip {
+    padding: 48px 5% 32px;
+  }
+  .footer-bottom-centered {
+    gap: 6px;
+  }
+}
+
+#localizacao { 
+  
+  background: var(--black); 
+
+}
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px; 
+  align-items: center;
+}
+
+.location-content-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; 
+}
+
+.location-details-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; 
+}
+
+.location-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* Quadrado elegante dos ícones */
+.location-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.location-icon img {
+  width: 24px; 
+  height: auto;
+  object-fit: contain;
+}
+
+/* Textos de Endereço, Horários e Contato */
+.location-detail-text p:first-child {
+  font-family: var(--font-condensed);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+}
+
+.location-detail-text p:last-child {
+  font-size: 16px;
+  font-weight: 300;
+  color: #FFFFFF;
+  line-height: 1.5;
+}
+
+/* ── RESPONSIVO (CELULAR) ── */
+@media (max-width: 992px) {
+  .location-grid {
+    grid-template-columns: 1fr; /* No celular fica uma coisa embaixo da outra */
+    gap: 50px;
+  }
+  .location-photo-container {
+    min-height: 350px;
+  }
+}
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 0 !important;
+    background: var(--dark2);
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding: 72px 8% 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+  .footer-brand-name {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .footer-brand-name span { color: var(--white); font-style: italic; }
+  .footer-tagline {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 300px;
+    margin-bottom: 24px;
+  }
+  .footer-social { display: flex; gap: 12px; }
+  .social-link {
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(201,168,76,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--gold);
+    font-size: 14px;
+    transition: background 0.2s, border-color 0.2s;
+    font-family: var(--font-condensed);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  .social-link:hover { background: rgba(201,168,76,0.12); border-color: var(--gold); }
+  .footer-col-title {
+    font-family: var(--font-condensed);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-links a {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray-light);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: var(--gray);
+  }
+  .footer-copy a { color: var(--gold-dark); text-decoration: none; }
+
+  /* ── WHATSAPP FLOAT ── */
+  .whatsapp-float {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 998;
+    width: 76px;
+    height: 76px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.35);
+    text-decoration: none;
+    transition: box-shadow 0.25s;
+    animation: waPulse 2.2s ease-in-out infinite;
+  }
+  .whatsapp-float:hover { box-shadow: 0 8px 32px rgba(37, 211, 102, 0.65); }
+  .whatsapp-float svg { width: 38px; height: 38px; fill: white; }
+
+  .footer-logo {
+  /* Controla o tamanho da logo para não quebrar o layout */
+  max-width: 180px; 
+  height: auto;
+  
+  /* Cria um espaço de respiro entre a logo e a frase de baixo */
+  margin-bottom: 20px; 
+  
+  /* Opcional: Um leve efeito para deixá-la mais nítida no fundo escuro */
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.15); }
+  }
+  @keyframes waPulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.40), 0 0 0 0 rgba(37, 211, 102, 0.45);
+    }
+    70% {
+      transform: scale(1.07);
+      box-shadow: 0 8px 28px rgba(37, 211, 102, 0.55), 0 0 0 20px rgba(37, 211, 102, 0);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.40), 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+  }
+
+  /* Respeita quem prefere menos animação (acessibilidade) */
+  @media (prefers-reduced-motion: reduce) {
+    .whatsapp-float { animation: none; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .numbers-strip { grid-template-columns: repeat(2, 1fr); }
+    .number-item:nth-child(2) { border-right: none; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .about-grid, .clube-inner, .faq-grid { grid-template-columns: 1fr; gap: 48px; }
+    .faq-img { display: none; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .location-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 9px 16px;
+      background: #B73736; /* Fundo vermelho da marca */
+      border-radius: 6px;
+      transition: background 0.3s ease, transform 0.2s ease, padding 0.3s ease;
+    }
+    .hamburger:hover { background: #9E2F2E; }
+    .hamburger::after {
+      content: "MENU";
+      font-family: var(--font-condensed);
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: 2px;
+      color: #ffffff; /* Texto branco */
+      text-transform: uppercase;
+    }
+    /* Menu aberto: o botão fica só com um "X" */
+    .hamburger.open { padding: 14px; }                       /* botão maior no estado X */
+    .hamburger.open::after { display: none; }                /* some o texto MENU */
+    .hamburger.open .menu-bars { background: transparent; width: 26px; }  /* X maior */
+    .hamburger.open .menu-bars::before { top: 0; transform: rotate(45deg); }
+    .hamburger.open .menu-bars::after  { top: 0; transform: rotate(-45deg); }
+    .section-inner, .clube-inner { padding: 60px 5%; }
+    .services-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .numbers-strip { grid-template-columns: repeat(2, 1fr); padding: 40px 6%; }
+    .plans-grid { grid-template-columns: 1fr; }
+    .plan-card.featured { grid-column: 1; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .services-header { flex-direction: column; align-items: flex-start; }
+    .historia-grid { grid-template-columns: 1fr; gap: 40px; }
+    .historia-img-wrap { margin: 0 auto; max-width: 100%; }
+    .location-grid { grid-template-columns: 1fr; gap: 40px; }
+    .sobre-cta { padding: 60px 5%; }
+    .valores-header { margin-bottom: 40px; }
+    .values-grid { gap: 20px; }
+    .section-title { font-size: clamp(28px, 7vw, 44px); }
+  }
+
+  /* ══════════════════════════════════════
+   PÁGINA: SOBRE NÓS
+══════════════════════════════════════ */
+
+ /* ── PAGE HERO (SOBRE) ── */
+  .page-hero {
+    position: relative;
+    height: 60vh;
+    min-height: 420px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background: var(--black);
+    padding-bottom: 80px;
+  }
+
+  .page-hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(105deg, rgba(9,21,40,0.95) 40%, rgba(9,21,40,0.55) 100%),
+      url(img_hebreus/andrea-donato-MNu0n-3BIKs-unsplash.jpg) center/cover no-repeat;
+  }
+
+  .page-hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--black) 0%, transparent 50%);
+  }
+
+  .page-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 8%;
+    max-width: 860px;
+  }
+
+  .page-hero-content .eyebrow {
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.3s;
+  }
+
+  .page-hero-content h1 {
+    font-family: var(--font-display);
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 900;
+    line-height: 1.0;
+    color: var(--white);
+    margin-bottom: 0;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.5s;
+  }
+
+  .page-hero-content h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  /* Linha decorativa vertical no hero */
+  .page-hero-line {
+    position: absolute;
+    right: 8%;
+    bottom: 80px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 1s;
+  }
+
+  .page-hero-line span {
+    font-family: var(--font-condensed);
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray);
+    writing-mode: vertical-rl;
+  }
+
+  .page-hero-line::before {
+    content: '';
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  /* ── HISTÓRIA PRINCIPAL ── */
+  #historia {
+    background: var(--dark);
+  }
+
+  .historia-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+/* Container da imagem da História */
+.historia-img-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 400px; /* Impede que a imagem fique larga demais no desktop */
+    margin-top: 12px; /* Mantém o alinhamento com a altura do título */
+    /* margin: 12px auto 0; <-- Use essa linha em vez da de cima se quiser a foto centralizada na coluna dela */
+}
+
+/* A imagem em si */
+.historia-img-wrap img {
+    width: 100%;
+    height: 450px; /* CRÍTICO: Trava a altura da imagem para ela não ficar gigante */
+    object-fit: cover; /* Corta as sobras da foto para caber nesses 450px sem amassar ou distorcer */
+    border-radius: 8px; /* Dá aquele acabamento premium com cantos arredondados */
+    display: block;
+}
+
+/* Responsividade: para não ficar muito alta no celular */
+@media (max-width: 768px) {
+    .historia-img-wrap img {
+        height: 300px; /* Reduz a altura da foto em telas menores */
+    }
+}
+
+  .historia-badge {
+    position: absolute;
+    bottom: -24px;
+    right: -24px;
+    width: 110px;
+    height: 110px;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .historia-badge strong {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--black);
+    line-height: 1;
+  }
+
+  .historia-badge span {
+    font-family: var(--font-condensed);
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--black);
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .historia-text {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .historia-text .section-body {
+    max-width: 100%;
+  }
+
+  /* ── TIMELINE ── */
+  #timeline {
+    background: var(--black);
+  }
+
+  .timeline-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .timeline-header .eyebrow {
+    display: block;
+    text-align: center;
+  }
+
+  .timeline-header .section-title {
+    text-align: center;
+  }
+
+  .timeline-wrap {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Linha central vertical */
+  .timeline-wrap::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.15) 10%, rgba(255,255,255,0.15) 90%, transparent);
+    transform: translateX(-50%);
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    margin-bottom: 64px;
+    align-items: start;
+  }
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Conteúdo à esquerda */
+  .timeline-left {
+    text-align: right;
+    padding-right: 40px;
+    padding-top: 4px;
+  }
+
+  /* Conteúdo à direita */
+  .timeline-right {
+    text-align: left;
+    padding-left: 40px;
+    padding-top: 4px;
+  }
+
+  /* Items pares: conteúdo na direita, vazio na esquerda */
+  .timeline-item.right .timeline-left { order: 1; }
+  .timeline-item.right .timeline-center { order: 2; }
+  .timeline-item.right .timeline-right { order: 3; }
+
+  /* Items ímpares: conteúdo na esquerda, vazio na direita */
+  .timeline-item.left .timeline-left { order: 1; }
+  .timeline-item.left .timeline-center { order: 2; }
+  .timeline-item.left .timeline-right { order: 3; }
+
+  /* Quando o conteúdo está à esquerda, o right fica vazio */
+  .timeline-item.left .timeline-right { visibility: hidden; }
+  /* Quando o conteúdo está à direita, o left fica vazio */
+  .timeline-item.right .timeline-left { visibility: hidden; }
+
+  .timeline-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    position: relative;
+  }
+
+  .timeline-dot {
+    width: 14px;
+    height: 14px;
+    background: var(--gold);
+    border-radius: 0; /* Quadrado como no estilo da home */
+    transform: rotate(45deg);
+    flex-shrink: 0;
+    margin-top: 4px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .timeline-year {
+    font-family: var(--font-condensed);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--gold);
+    margin-top: 12px;
+    text-transform: uppercase;
+  }
+
+  .timeline-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .timeline-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray-light);
+    line-height: 1.8;
+  }
+
+  /* ── VALORES / PILARES ── */
+  #valores {
+    background: var(--black);
+  }
+
+  .valores-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .valores-header .eyebrow { display: block; text-align: center; }
+  .valores-header .section-title { text-align: center; }
+
+  /* Container do Grid de Valores/Benefícios */
+.valores-grid {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os cards quebrem para a linha de baixo */
+    justify-content: center; /* CRÍTICO: É isso que centraliza os cards 4 e 5 na última linha! */
+    gap: 30px;
+    max-width: 1100px; /* Limita a largura total para não ficarem muito espalhados no desktop */
+    margin: 0 auto; /* Centraliza o bloco todo na tela */
+}
+
+/* O Card em si */
+.valor-card {
+    flex: 1 1 300px; 
+    max-width: 340px;
+    
+    /* ADICIONE ESTAS LINHAS PARA O FUNDO APARECER: */
+    background: rgba(255, 255, 255, 0.03); /* Cria um fundo levemente mais claro que a página */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Cria a linha de contorno do card */
+    padding: 32px 24px; /* Garante que o texto não cole nas bordas */
+    border-radius: 8px; /* Arredonda as pontas para o visual premium */
+    position: relative; /* Necessário para os números grandes (01, 02) ficarem posicionados corretamente no fundo */
+    
+    /* Mantém a transição suave caso você tenha efeito de hover */
+    transition: all 0.3s ease;
+}
+
+  .valor-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--gold);
+    transition: height 0.4s ease;
+  }
+
+  .valor-card:hover::before { height: 100%; }
+
+  .valor-card:hover {
+    background: rgba(255, 255, 255, 0.08); /* Fica um pouco mais claro ao passar o mouse */
+    transform: translateY(-5px); /* Dá uma leve levantadinha */
+  }
+
+  .valor-num {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    position: absolute;
+    top: 20px;
+    right: 24px;
+  }
+
+  .valor-icon {
+    font-size: 28px;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .valor-title {
+    font-family: var(--font-condensed);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .valor-desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--gray-light);
+    line-height: 1.8;
+  }
+
+  /* ESTADO INICIAL: Escondido e deslocado 40px para baixo */
+.valor-card.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    /* Usamos uma curva suave (cubic-bezier) para um efeito mais premium */
+    transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ESTADO FINAL: O Javascript adiciona a classe .visible quando o card entra na tela */
+.valor-card.reveal.visible {
+    opacity: 1;
+    transform: translateY(0); /* Sobe para a posição natural */
+}
+
+  /* ── EQUIPE ── */
+  #equipe {
+    background: var(--black);
+  }
+
+  .equipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+    gap: 40px;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .team-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--dark2);
+  }
+
+  .team-card-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+    filter: brightness(0.8) saturate(0.7);
+    transition: transform 0.6s ease, filter 0.4s;
+  }
+
+  .team-card:hover .team-card-img {
+    transform: scale(1.05);
+    filter: brightness(0.65) saturate(0.5);
+  }
+
+  .team-card-info {
+    padding: 24px;
+    border-top: 2px solid var(--gold);
+  }
+
+  .team-card-role {
+    font-family: var(--font-condensed);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .team-card-name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .team-card-bio {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* ── NÚMEROS (reaproveitado da home, mas com fundo diferente) ── */
+  .sobre-numbers {
+    background: var(--dark2);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 64px 8%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  /* ── CTA FINAL ── */
+  .sobre-cta {
+    background: var(--black);
+    padding: 120px 8%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sobre-cta::before {
+    content: 'HEBREUS';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-size: clamp(80px, 18vw, 220px);
+    font-weight: 900;
+    color: rgba(255,255,255,0.02);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 10px;
+  }
+
+  .sobre-cta-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .sobre-cta .eyebrow { display: block; text-align: center; }
+  .sobre-cta .section-title { text-align: center; }
+
+  .sobre-cta-btns {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 44px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .historia-grid { grid-template-columns: 1fr; gap: 60px; }
+    .valores-grid { grid-template-columns: repeat(2, 1fr); }
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+    .sobre-numbers { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .page-hero { height: 50vh; min-height: 360px; }
+
+    .timeline-wrap::before { left: 24px; }
+    .timeline-item {
+      grid-template-columns: 48px 1fr;
+      gap: 0;
+    }
+    .timeline-item .timeline-left { display: none; }
+    .timeline-item.right .timeline-left,
+    .timeline-item.left .timeline-left { display: none; }
+    .timeline-item.left .timeline-right,
+    .timeline-item.right .timeline-right { visibility: visible; }
+    .timeline-center { align-items: flex-start; padding-left: 4px; }
+    .timeline-right { padding-left: 16px; }
+    .timeline-left { display: none; }
+
+    .valores-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    .sobre-numbers { grid-template-columns: repeat(2, 1fr); padding: 40px 6%; }
+    .equipe-header { flex-direction: column; align-items: flex-start; }
+    .page-hero-line { display: none; }
+  }
+
+/* ══════════════════════════════════════════════════
+   PÁGINA: HEBREUS VIP
+══════════════════════════════════════════════════ */
+
+/* ── PAGE HERO ── */
+.vip-page-hero {
+  position: relative;
+  height: 65vh;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--black);
+}
+
+.vip-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(105deg, rgba(13,31,60,1) 40%, rgba(13,31,60,0.3) 100%),
+    url(img_hebreus/Barb_Hebreus_Unidade.jpg) center/cover no-repeat;
+}
+
+.vip-hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--black) 0%, transparent 50%);
+}
+
+.vip-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 120px 8% 0;
+  max-width: 780px;
+}
+
+.vip-hero-eyebrow {
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.3s;
+}
+
+.vip-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 8vw, 100px);
+  font-weight: 900;
+  line-height: 1.0;
+  color: var(--white);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.5s;
+}
+
+.vip-hero-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.vip-hero-sub {
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--gray-light);
+  line-height: 1.8;
+  max-width: 480px;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.7s;
+}
+
+.vip-hero-btn {
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.9s;
+}
+
+.vip-hero-line {
+  position: absolute;
+  right: 8%;
+  bottom: 60px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards 1.2s;
+}
+
+.vip-hero-line span {
+  font-family: var(--font-condensed);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gray);
+  writing-mode: vertical-rl;
+}
+
+.vip-hero-line::before {
+  content: '';
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+}
+
+/* ── APRESENTAÇÃO ── */
+#vip-apresentacao {
+  background: var(--dark);
+}
+
+.vip-apres-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: stretch; /* <-- ALTERADO: 'stretch' obriga a coluna da foto a ter a mesma altura da coluna do texto */
+}
+
+.vip-apres-img-wrap {
+  position: relative;
+  height: 100%; /* <-- ADICIONADO: Avisa a div para preencher todo o espaço vertical liberado pelo grid */
+}
+
+.vip-apres-img-wrap img {
+  width: 100%;
+  height: 100%; /* <-- ADICIONADO: Faz a foto bater na mesma altura da div (que agora é igual ao texto) */
+  /* aspect-ratio: 4/5; <-- REMOVIDO: Você precisa apagar essa linha para a foto parar de crescer sozinha! */
+  object-fit: cover;
+  display: block;
+}
+
+.vip-apres-img-wrap::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: 20px;
+  bottom: 20px;
+  border: 1px solid rgba(255,255,255,0.12);
+  z-index: -1;
+}
+
+.vip-apres-badge {
+  position: absolute;
+  bottom: -24px;
+  right: -24px;
+  width: 110px;
+  height: 110px;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.vip-apres-badge strong {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--black);
+  line-height: 1;
+}
+
+.vip-apres-badge span {
+  font-family: var(--font-condensed);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--black);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.vip-apres-text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.vip-apres-text .section-body {
+  max-width: 100%;
+}
+
+/* ── BENEFÍCIOS ── */
+/* ── BLOCO 3: BENEFÍCIOS VIP ── */
+#vip-beneficios {
+  background: #FFFFFF;
+}
+
+/* Título principal do bloco — fonte Young Heart, duas cores */
+.vip-benef-heading {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.05;
+  margin-bottom: 0;
+}
+
+.vip-benef-heading-main {
+  color: #003A55;
+  font-family: 'Young Heart', var(--font-display);
+  font-size: clamp(40px, 6vw, 68px);
+}
+
+.vip-benef-heading-destaque {
+  color: #B73736;
+  font-family: 'Young Heart', var(--font-display);
+  font-size: clamp(40px, 6vw, 68px);
+}
+
+.vip-benef-header {
+  margin-bottom: 64px;
+}
+
+.vip-benef-header .section-body {
+  max-width: 560px;
+  margin-top: 16px;
+}
+
+.vip-benef-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+
+/* 3.2 — Cards com fundo #003A55 */
+.vip-benef-card {
+  background: #003A55;
+  padding: 44px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+
+.vip-benef-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #B73736;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.vip-benef-card:hover::before {
+  transform: scaleX(1);
+}
+
+.vip-benef-card:hover {
+  background: #004d70;
+}
+
+.vip-benef-icon {
+  font-size: 22px;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+  display: block;
+  line-height: 1;
+}
+
+/* 3.3 — Título dos cards em Young Heart */
+.vip-benef-title {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #FFFFFF;
+  margin-bottom: 14px;
+  line-height: 1.25;
+}
+
+.vip-benef-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.8;
+}
+
+/* ── PLANOS ── */
+/* (1) Fundo do bloco de Planos no vermelho da marca */
+#planos {
+  background: #0E1E2C; /* Mesmo fundo da navbar */
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* (2) Título dos Planos: 100% branco */
+#planos .vip-planos-title {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.05;
+  font-size: clamp(40px, 6vw, 68px);
+  color: #FFFFFF;
+}
+#planos .vip-planos-title .vp-navy { color: #FFFFFF; }
+#planos .vip-planos-title .vp-red  { color: #FFFFFF; }
+
+/* Nota legível sobre o fundo vermelho */
+#planos .vip-planos-nota { color: rgba(255,255,255,0.85); margin-top: 24px; }
+#planos .vip-planos-nota a { color: #FFFFFF; text-decoration: underline; }
+#planos .vip-planos-nota a:hover { color: rgba(255,255,255,0.8); }
+
+.vip-planos-header {
+  margin-bottom: 12px;
+}
+
+.vip-planos-header .section-body {
+  margin-top: 16px;
+}
+
+/* ════════════════════════════════════════════════════
+   BLOCO 4 — CARD ÚNICO DE PLANO (VIP TODO DIA)
+   Moldura idêntica à Tabela de Valores (.quadro-valores + .qv-panel).
+   Young Heart: .plano-title, .plano-price, .plano-currency
+   Demais textos: var(--font-body) (mesma fonte do .vip-benef-desc do Bloco 3)
+   ════════════════════════════════════════════════════ */
+
+/* largura mais estreita para o card (mantendo a MESMA moldura da pág. Serviços) */
+.quadro-valores.plano-vip-quadro {
+  max-width: 400px;
+}
+
+/* painel: abre espaço no topo para o selo e centraliza o conteúdo */
+.qv-panel.plano-vip-panel {
+  padding: 58px 30px 26px;
+  text-align: center;
+}
+
+/* ── Selo "Mais Vendido" ── */
+.plano-badge {
+  position: absolute;
+  top: 16px;
+  left: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #B73736;
+  color: #FFFFFF;
+  font-family: var(--font-condensed);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 7px 18px;
+}
+.plano-badge-star { font-size: 12px; line-height: 1; }
+
+/* ── Título + subtítulo ── */
+.plano-vip-head { margin-bottom: 14px; }
+
+.plano-title {
+  font-family: 'Young Heart', var(--font-display);   /* << YOUNG HEART */
+  font-weight: 400;
+  font-size: clamp(32px, 8vw, 40px);
+  line-height: 1;
+  letter-spacing: 1px;
+  color: #FFFFFF;
+}
+
+.plano-subtitle {
+  font-family: var(--font-body);                     /* mesma fonte do .vip-benef-desc */
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  margin-top: 6px;
+}
+
+/* ── Preço ── */
+.plano-price-wrap { margin: 0 0 16px; }
+
+.plano-price {
+  font-family: 'Young Heart', var(--font-display);   /* << YOUNG HEART */
+  font-weight: 400;
+  font-size: clamp(48px, 12vw, 60px);
+  line-height: 1;
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+}
+
+.plano-currency {
+  font-family: 'Young Heart', var(--font-display);   /* << YOUNG HEART */
+  font-size: 0.44em;
+  line-height: 1;
+  margin-top: 0.42em;
+}
+
+.plano-period {
+  display: block;
+  font-family: var(--font-body);                     /* mesma fonte do .vip-benef-desc */
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  margin-top: 8px;
+}
+
+/* ── Benefícios ── */
+.plano-features {
+  list-style: none;
+  margin: 0 0 26px;
+  padding: 0;
+  text-align: left;
+}
+
+.plano-features li {
+  position: relative;
+  font-family: var(--font-body);                     /* mesma fonte do .vip-benef-desc */
+  font-size: 14px;
+  font-weight: 300;
+  color: #FFFFFF;
+  padding: 0 0 0 32px;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.plano-features li:last-child { margin-bottom: 0; }
+
+/* check em círculo vermelho com tique branco */
+.plano-features li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #B73736;
+}
+.plano-features li::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  width: 5px;
+  height: 9px;
+  border: solid #FFFFFF;
+  border-width: 0 2px 2px 0;
+  transform: translateY(-60%) rotate(45deg);
+}
+
+/* ── Botão ── */
+.plano-btn {
+  display: block;
+  text-align: center;
+  font-family: var(--font-body);                     /* mesma fonte do .vip-benef-desc */
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  padding: 14px;
+  background: #B73736;
+  color: #FFFFFF;
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+.plano-btn:hover { filter: brightness(1.12); transform: translateY(-2px); }
+
+.vip-planos-nota {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--gray);
+  margin-top: 48px;
+}
+
+.vip-planos-nota a {
+  color: var(--gold);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.vip-planos-nota a:hover {
+  color: var(--white);
+}
+
+/* ════════════════════════════════════════════════════
+   GRID DE 3 CARDS DE PLANOS
+   ════════════════════════════════════════════════════ */
+
+.planos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+.planos-grid > .plano-card-frame {
+  flex: 0 0 334px;
+  max-width: 100%;
+}
+/* Esconde os frames de plano quando o filtro atua */
+.plano-card-frame.hidden {
+  display: none !important;
+}
+/* Espaço entre os chips de filtro e o título do bloco */
+.planos-filtros {
+  margin-top: 28px;
+}
+
+/* Moldura preta metálica nos cards de plano (mesma da localização da index) */
+.plano-card-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;               /* espessura da moldura */
+  border-radius: 4px;
+  background: linear-gradient(135deg,
+              #5a5a5a 0%, #1a1a1a 22%, #3a3a3a 50%,
+              #0a0a0a 78%, #2e2e2e 100%);
+  box-shadow:
+    0 32px 70px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+}
+.plano-card-frame .plano-card {
+  flex: 1;                     /* card preenche a altura da moldura (alturas iguais) */
+}
+
+/* ── Card base ── */
+.plano-card {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 28px 32px;
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Cabeçalho ── */
+.plano-card-head {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.plano-card-title {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-size: clamp(26px, 4vw, 32px);
+  line-height: 1;
+  letter-spacing: 1px;
+  color: #FFFFFF;
+  margin: 0 0 6px;
+}
+
+.plano-card-subtitle {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+/* ── Preço ── */
+.plano-card-price-wrap {
+  margin: 0 0 24px;
+}
+
+.plano-card-price {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-size: clamp(50px, 7vw, 64px);
+  line-height: 1;
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 3px;
+  margin: 0;
+}
+
+.plano-card-currency {
+  font-family: 'Young Heart', var(--font-display);
+  font-size: 0.38em;
+  line-height: 1;
+  margin-top: 0.48em;
+}
+
+.plano-card-decimal {
+  font-family: 'Young Heart', var(--font-display);
+  font-size: 0.44em;
+  line-height: 1;
+  margin-top: 0.42em;
+  align-self: flex-end;
+  margin-bottom: 0.1em;
+}
+
+.plano-card-period {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 6px;
+}
+
+/* ── Lista de benefícios ── */
+.plano-card-features {
+  list-style: none;
+  margin: 0 0 28px;
+  padding: 0;
+  flex: 1;
+}
+
+.plano-card-features li {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  color: #FFFFFF;
+  padding: 11px 0 11px 36px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  line-height: 1.3;
+}
+
+.plano-card-features li:last-child {
+  border-bottom: none;
+}
+
+/* ── Ícone CHECK ── */
+.plano-feat-check::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--icon-color, #B73736);
+}
+
+.plano-feat-check::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  width: 5px;
+  height: 10px;
+  border: solid #FFFFFF;
+  border-width: 0 2px 2px 0;
+  transform: translateY(-62%) rotate(45deg);
+}
+
+/* ── Ícone X ── */
+.plano-feat-x {
+  opacity: 0.65;
+}
+
+.plano-feat-x::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--icon-color, #003A55);
+}
+
+.plano-feat-x::after {
+  content: '✕';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 22px;
+  text-align: center;
+}
+
+/* ── Botão ── */
+.plano-card-btn {
+  display: block;
+  text-align: center;
+  font-family: var(--font-condensed);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 15px 10px;
+  transition: filter 0.25s ease, transform 0.25s ease;
+  margin-top: auto;
+}
+
+.plano-card-btn:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+}
+
+/* ── Responsivo: tablet 2 col, mobile 1 col ── */
+@media (max-width: 900px) {
+  .planos-grid {
+    max-width: 696px;
+  }
+}
+
+@media (max-width: 600px) {
+  .planos-grid {
+    max-width: 380px;
+  }
+
+  .planos-grid > .plano-card-frame {
+    flex-basis: 100%;
+  }
+
+  .plano-card {
+    padding: 32px 22px 26px;
+  }
+
+  .plano-card-frame {
+    padding: 12px;
+  }
+}
+
+/* 1. ESTADO INICIAL (Escondido e um pouco mais para baixo) */
+.vip-benef-card.reveal {
+    opacity: 0;
+    transform: translateY(40px); /* Empurra o card 40 pixels para baixo */
+    /* A transição vai animar a opacidade e a posição. 
+       Não coloque !important aqui para que o navegador respeite o seu transition-delay do HTML */
+    transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* 2. ESTADO FINAL (Visível e na posição original) */
+.vip-benef-card.reveal.visible {
+    opacity: 1;
+    transform: translateY(0); /* Volta para o lugar normal */
+}
+
+/* ── RESPONSIVO — HEBREUS VIP ── */
+@media (max-width: 1024px) {
+  .vip-benef-grid { grid-template-columns: repeat(2, 1fr); }
+  .vip-apres-grid { grid-template-columns: 1fr; gap: 60px; }
+}
+
+/* 3.4 — Mobile: cards empilhados, sem carrossel */
+@media (max-width: 768px) {
+  .vip-page-hero { height: 55vh; min-height: 400px; }
+  .vip-hero-content { padding: 0 6%; }
+  .vip-hero-line { display: none; }
+  .vip-benef-grid {
+    grid-template-columns: 1fr;
+    display: grid !important;
+    overflow: visible !important;
+  }
+  .vip-benef-card {
+    transform: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   PÁGINA: Serviços
+══════════════════════════════════════════════════ */
+
+  .servicos-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      linear-gradient(105deg, rgba(13,31,60,1) 40%, rgba(13,31,60,0.3) 100%),
+      url('img_hebreus/Corte premium.jpg') center/cover no-repeat;
+  }
+  .servicos-hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--black) 0%, transparent 40%);
+  }
+
+  /* Seção Principal de Serviços */
+  .servicos-section {
+    background: var(--dark);
+    padding: 60px 8% 120px;
+  }
+
+  /* Filtros */
+  .filtros-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+  .btn-filtro {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--gray-light);
+    padding: 10px 20px;
+    font-family: var(--font-condensed);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-filtro.active, .btn-filtro:hover {
+    background: var(--gold);
+    color: var(--black);
+    border-color: var(--gold);
+  }
+
+/* 1. SEÇÃO PRINCIPAL: Força o layout em coluna (filtros em cima, cards embaixo) */
+.servicos-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza tudo na tela */
+    width: 100%;
+    padding: 60px 20px;
+}
+
+/* 2. FILTROS: Centraliza os botões do menu */
+.filtros-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px; /* Espaço entre o menu e os cards */
+    width: 100%;
+}
+
+/* 3. LISTA DE CARDS: Centraliza e diminui a largura para um retângulo menor e mais elegante */
+.servicos-lista {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    max-width: 750px; /* CRÍTICO: É isso que deixa o retângulo menor */
+    margin: 0 auto;
+}
+
+/* 4. O CARD: Trava a altura para a imagem não ficar gigante */
+.servico-card {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 240px; /* CRÍTICO: Impede que o card fique com uma altura desproporcional */
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Imagem bem ajustada à esquerda */
+.servico-img {
+    flex: 0 0 280px; /* Deixa a foto mais estreita e harmônica */
+    height: 100%;
+}
+
+.servico-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* A foto preenche o espaço sem distorcer */
+}
+
+/* Textos e Botões na direita */
+.servico-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 24px;
+}
+
+.servico-nome {
+    margin-bottom: 8px;
+}
+
+.servico-desc {
+    font-size: 15px; /* Tamanho confortável para a descrição */
+}
+
+/* Container dos botões no card */
+.servico-btns {
+    display: flex;
+    flex-direction: row; /* Garante que fiquem um ao lado do outro */
+    gap: 10px; /* Espaço reduzido entre eles */
+    margin-top: 16px;
+    flex-wrap: nowrap; /* Força os botões a ficarem na mesma linha */
+}
+
+/* Reduzindo o tamanho dos botões especificamente dentro dos cards */
+.servico-btns .btn-primary,
+.servico-btns .btn-outline {
+    padding: 8px 12px; /* Reduz a altura e a largura interna do botão */
+    font-size: 12px; /* Deixa a fonte menor para caber melhor */
+    white-space: nowrap; /* Impede que o texto "Agendar pelo Clube" quebre em duas linhas */
+    flex: 1; /* Faz os dois botões dividirem o espaço igualmente (ficam do mesmo tamanho) */
+    text-align: center; /* Centraliza o texto no botão */
+    justify-content: center; /* Garante a centralização caso o botão use flexbox internamente */
+}
+
+/* Tratamento para telas de celular muito estreitas */
+@media (max-width: 400px) {
+    .servico-btns {
+        flex-wrap: wrap; /* Se a tela for muito pequena, permite que fiquem um embaixo do outro para não quebrar o layout */
+    }
+    
+    .servico-btns .btn-primary,
+    .servico-btns .btn-outline {
+        flex: none;
+        width: 100%; /* No celular bem pequeno, eles assumem a largura total */
+    }
+}
+
+/* Acelera a animação de revelação especificamente para os cards de serviço */
+.servico-card.reveal {
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out !important;
+}
+
+/* Esconde os cards quando o javascript do filtro atuar */
+.servico-card.hidden {
+    display: none !important;
+}
+
+/* 5. RESPONSIVIDADE: Ajuste perfeito para celulares */
+@media (max-width: 768px) {
+    .servico-card {
+        flex-direction: column;
+        height: auto; /* Libera a altura no celular para o texto caber */
+    }
+    
+    .servico-img {
+        flex: none;
+        width: 100%;
+        height: 200px;
+    }
+}
+/* ══════════════════════════════════════════════════
+   PÁGINA: Sobre Nós
+══════════════════════════════════════════════════ */
+
+  .sobre-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      linear-gradient(105deg, rgba(13,31,60,1) 40%, rgba(13,31,60,0.3) 100%),
+      url('img_hebreus/andrea-donato-MNu0n-3BIKs-unsplash.jpg') center/cover no-repeat;
+  }
+  .sobre-hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--black) 0%, transparent 40%);
+  }
+
+/* ══════════════════════════════════════════════════
+   PÁGINA: Trabalhe Conosco
+══════════════════════════════════════════════════ */
+
+.career-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      linear-gradient(105deg, rgba(13,31,60,1) 40%, rgba(13,31,60,0.3) 100%),
+      url('img_hebreus/Cadeira_barbearia.jpg') center/cover no-repeat;
+  }
+  .career-hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--black) 0%, transparent 40%);
+  }
+
+  /* Bloco de Benefícios */
+  #beneficios-carreira {
+    background: var(--dark);
+  }
+/* ══════════════════════════════════════════════════
+   RESPONSIVO GLOBAL — CORREÇÕES MOBILE
+══════════════════════════════════════════════════ */
+
+/* Telas médias (tablets) */
+@media (max-width: 1024px) {
+  nav {
+    padding: 0 5%;
+  }
+
+  .historia-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .vip-apres-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .clube-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+
+/* Telas pequenas (smartphones) */
+@media (max-width: 768px) {
+
+  /* Navbar mobile */
+  nav {
+    padding: 0 5%;
+    height: 80px;
+  }
+
+  .logo-img {
+    height: 62px;
+  }
+
+  nav.scrolled .logo-img {
+    height: 54px;
+  }
+
+  /* Mobile menu - garante que hamburger aparece */
+  .hamburger {
+    display: flex !important;
+    z-index: 1001;
+  }
+
+  /* Hero mobile */
+  .hero {
+    height: 100svh;          /* altura visível real (evita esconder o "Rolar" atrás da barra do navegador) */
+    min-height: 100svh;
+    padding-bottom: 60px;
+    /* Garante que o hero mantém flex mesmo com o override de section abaixo */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center;
+  }
+
+  .hero-content {
+    padding: 0 6%;
+    max-width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    transform: none;
+  }
+
+  /* Centraliza o eyebrow, título e subtítulo */
+  .hero-eyebrow {
+    text-align: center;
+    font-size: 23px;
+    letter-spacing: 3px;
+  }
+
+  .hero-title {
+    font-size: clamp(60px, 13vw, 124px);
+    line-height: 1.02;
+    text-align: center;
+  }
+
+  .hero-title em {
+    display: block;
+    text-align: center;
+  }
+
+  .hero-sub {
+    font-size: 20px;
+    margin-bottom: 36px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    line-height: 1.7;
+  }
+
+  /* INDEX: hero centralizado no mobile */
+  .home .hero {
+    align-items: center !important;       /* centraliza verticalmente */
+    justify-content: center;              /* centraliza horizontalmente */
+  }
+  .home .hero-content {
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 6%;                        /* sem deslocamento — fica no centro */
+    transform: none;                      /* remove o translateY(8vh) do desktop */
+  }
+  .home .hero-eyebrow,
+  .home .hero-title,
+  .home .hero-title em,
+  .home .hero-sub {
+    text-align: center;
+  }
+  /* Subtítulo centralizado e com largura controlada */
+  .home .hero-sub { margin-left: auto; margin-right: auto; max-width: 420px; }
+
+  /* "Rolar" volta a aparecer no hero também no mobile (restaurado) */
+  .hero-scroll {
+    bottom: calc(18px + env(safe-area-inset-bottom));
+    opacity: 1;
+  }
+
+  /* CTA do hero — visível só no mobile. Mesmo design retangular dos
+     demais botões do site (.btn-primary), porém em vermelho da marca. */
+  .hero-cta-mobile {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 16px 36px;
+    background: #B73736;
+    color: #FFFFFF;
+    font-family: var(--font-condensed);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.9s;
+  }
+  .hero-cta-mobile:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 18px rgba(183, 55, 54, 0.4);
+  }
+
+  /* Botões centralizados no mobile */
+  .hero-btns {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-btns .btn-primary,
+  .hero-btns .btn-outline {
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    padding: 14px 24px;
+  }
+
+  /* Sections no mobile - sem snap, altura livre (exceto .hero que mantém flex) */
+  section:not(.hero) {
+    min-height: unset !important;
+    display: block !important;
+    align-items: unset !important;
+    padding: 60px 0;
+  }
+
+  .hero {
+    padding: 0;
+  }
+
+  footer {
+    min-height: unset !important;
+    padding: 48px 5% 32px;
+  }
+
+  .section-inner {
+    padding: 0 5%;
+    width: 100%;
+  }
+
+  /* Numbers strip - 2x2 no mobile */
+  .numbers-strip {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 32px 5%;
+    gap: 24px;
+  }
+
+  .number-item {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 16px;
+  }
+
+  .number-item:nth-child(odd) {
+    border-right: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .number-item:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
+
+  .number-val {
+    font-size: 38px;
+  }
+
+  /* Cards de serviço no mobile */
+  .servico-card {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .servico-img {
+    flex: none;
+    width: 100%;
+    height: 180px;
+  }
+
+  /* Pilares / Valores no mobile */
+  .valores-grid {
+    gap: 16px;
+  }
+
+  .valor-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  /* FAQ mobile */
+  .faq-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .faq-img {
+    display: none;
+  }
+
+  /* Localização mobile */
+  .location-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Historia mobile */
+  .historia-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .historia-img-wrap {
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  /* CTA mobile */
+  .sobre-cta {
+    padding: 60px 5%;
+  }
+
+  .sobre-cta-btns {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 32px;
+  }
+
+  .sobre-cta-btns .btn-primary,
+  .sobre-cta-btns .btn-outline {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+  }
+
+  /* Footer mobile */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+
+  /* Tipografia de seção ajustada para mobile */
+  .section-title {
+    font-size: clamp(26px, 7vw, 40px);
+  }
+
+  /* Plans */
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-card.featured {
+    grid-column: 1;
+  }
+
+  /* Serviços header */
+  .services-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    gap: 16px;
+  }
+
+  /* Testimonials */
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    margin-top: 40px;
+  }
+
+  /* Services grid */
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card img {
+    aspect-ratio: 16/9;
+  }
+
+  /* VIP page mobile */
+  .vip-page-hero {
+    height: 55vh;
+    min-height: 360px;
+  }
+
+  .vip-benef-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .vip-apres-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* WhatsApp float no mobile */
+  .whatsapp-float {
+    bottom: 20px;
+    right: 20px;
+    width: 66px;
+    height: 66px;
+  }
+
+  .whatsapp-float svg {
+    width: 33px;
+    height: 33px;
+  }
+
+  /* Expectativas grid mobile */
+  #expectativas > .section-inner > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Telas muito pequenas (320px–400px) */
+@media (max-width: 400px) {
+  nav {
+    padding: 0 4%;
+  }
+
+  .hero-content,
+  .vip-hero-content {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+
+  .section-inner {
+    padding: 0 4%;
+  }
+
+  .nav-cta {
+    padding: 10px 16px !important;
+    font-size: 12px !important;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    padding: 12px 20px;
+    font-size: 12px;
+  }
+}
+
+/* Corrige o scroll-snap apenas no desktop (desativa no mobile) */
+@media (max-width: 991px) {
+  html {
+    scroll-snap-type: none !important;
+  }
+
+  section {
+    scroll-snap-align: unset !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   AJUSTES — MENU MOBILE OVERLAY + GRID CLUBE
+══════════════════════════════════════════════════ */
+
+/* Grid imagem+texto do #clube — empilha no mobile */
+.clube-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .clube-content-grid {
+    grid-template-columns: 1fr !important;
+    gap: 36px !important;
+  }
+
+  /* INDEX & HEBREUS VIP — imagem depois do texto no mobile */
+  .clube-img-wrap {
+    order: 2;
+    max-width: 100% !important;
+  }
+
+  .clube-text {
+    order: 1;
+  }
+
+  /* Botão do clube ocupa a largura total no mobile */
+  .clube-text .btn-primary {
+    align-self: stretch !important;
+    text-align: center;
+  }
+
+  /* SOBRE NÓS & TRABALHE CONOSCO — imagem depois do texto no mobile */
+  .historia-grid {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .historia-img-wrap {
+    order: 2;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  .historia-text {
+    order: 1;
+  }
+
+  /* HEBREUS VIP — seção de apresentação */
+  .vip-apres-grid {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .vip-apres-img-wrap {
+    order: 2;
+  }
+
+  .vip-apres-text {
+    order: 1;
+  }
+
+  /* Menu mobile ajustado para não esconder o hamburger */
+  .hamburger {
+    position: relative;
+    z-index: 1001;
+  }
+}
+
+/* ── CARROSSEL MOBILE (demais páginas) ── */
+body:not(.home) .carousel-wrapper {
+  position: relative;
+}
+body:not(.home) .carousel-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body:not(.home) .carousel-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  body:not(.home) .carousel-track {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow: hidden !important;
+    gap: 0 !important;
+    width: 100%;
+    grid-template-columns: unset !important;
+    columns: unset !important;
+  }
+  body:not(.home) .carousel-track > * {
+    min-width: 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  body:not(.home) .carousel-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: background 0.2s, opacity 0.2s;
+    flex-shrink: 0;
+  }
+  body:not(.home) .carousel-btn:hover {
+    background: rgba(0, 0, 0, 0.85);
+  }
+  body:not(.home) .carousel-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+    pointer-events: none;
+  }
+  body:not(.home) .carousel-btn-prev { left: 4px; }
+  body:not(.home) .carousel-btn-next { right: 4px; }
+}
+
+/* ══════════════════════════════════════════════════
+   AJUSTES FINAIS — INDEX MOBILE
+══════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* Ajuste 2: Botão da section 2 centralizado no mobile */
+  .historia-text .btn-primary {
+    align-self: center !important;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+  }
+
+  /* Ajuste 3: Botão da section 3 abaixo do card, centralizado no mobile */
+  .services-header {
+    flex-direction: column;
+    align-items: center !important;
+    gap: 24px;
+  }
+
+  .services-header .btn-outline {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    white-space: normal;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   AJUSTES INDEX (escopo .home) — alterações solicitadas
+══════════════════════════════════════════════════ */
+
+/* Botão azul-marinho reutilizável (#003A55 + texto branco) */
+.btn-navy {
+  background: #003A55 !important;
+  color: #FFFFFF !important;
+  border-color: #003A55 !important;
+}
+.btn-navy:hover {
+  background: #00293C !important;
+  color: #FFFFFF !important;
+}
+
+/* Botão vermelho reutilizável (#B73736 + texto branco) */
+.btn-red {
+  background: #B73736 !important;
+  color: #FFFFFF !important;
+  border-color: #B73736 !important;
+}
+.btn-red:hover {
+  background: #9E2F2F !important;
+  color: #FFFFFF !important;
+}
+
+/* (2) Bloco 5 — cards de depoimentos com o fundo da navbar */
+.home #depoimentos .testimonial-card { background: #0E1E2C; }
+
+/* (1,3,8,9) Títulos dos blocos 2,3,5,6 — fonte Young Heart, mesmo tamanho */
+.home #clube .section-title,
+.home #servicos .section-title,
+.home #depoimentos .section-title,
+.home #localizacao .section-title {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(48px, 7vw, 82px) !important;
+  line-height: 1.05;
+}
+/* Clube VIP (bloco 2 colunas): título centralizado SÓ no mobile;
+   no desktop permanece à esquerda, na coluna de texto. */
+@media (max-width: 768px) {
+  .home #clube .section-title {
+    text-align: center;
+  }
+}
+.home #clube .section-title em,
+.home #servicos .section-title em,
+.home #depoimentos .section-title em,
+.home #localizacao .section-title em {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1em;
+  display: inline;
+  margin: 0;
+}
+
+/* Cor base e destaques (em) por bloco */
+.home #clube .section-title em { color: #FFFFFF; }            /* (1) Hebreus VIP branco */
+.home #servicos { background: #FFFFFF; }                       /* (4) fundo branco */
+.home #servicos .section-title { color: #003A55; }
+.home #servicos .section-title em { color: #B73736; }
+
+/* (2,8,9) Títulos alinhados ao topo (mesma "linha" do bloco 2) no desktop */
+@media (min-width: 992px) {
+  .home #clube,
+  .home #servicos,
+  .home #depoimentos,
+  .home #localizacao {
+    align-items: flex-start;
+    padding-top: 130px;
+    padding-bottom: 80px;
+  }
+}
+
+/* (4,5) Bloco 3 — Cards de serviço no mesmo formato/tamanho dos cards de Depoimentos */
+.home .service-icon-card {
+  background: #003A55;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0;            /* cantos quadrados, igual aos depoimentos */
+  padding: 32px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 18px;
+  cursor: default;
+}
+.home .service-icon {
+  width: 80px;
+  height: 80px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.home .service-icon svg { width: 100%; height: 100%; }
+.home .service-icon img { width: 100%; height: 100%; object-fit: contain; }
+.home .service-icon-title {
+  font-family: 'Young Heart', var(--font-display);   /* (5) título do card em Young Heart */
+  font-weight: 400;
+  font-style: normal;
+  font-size: 30px;
+  color: #FFFFFF;
+  line-height: 1.1;
+  margin: 0;
+}
+.home .service-icon-desc {
+  font-size: 15px;
+  font-weight: 300;
+  color: #FFFFFF;
+  line-height: 1.7;
+  opacity: 0.92;
+  margin: 0;
+}
+
+/* (6) Bloco 4 — Frase: fundo #B73736, texto branco, autor branco */
+.home .quote-banner { background: #B73736; }
+.home .quote-banner::before { color: rgba(255, 255, 255, 0.10); }
+.home .quote-text { color: #FFFFFF; }
+.home .quote-author { color: #FFFFFF; }
+
+/* (7) Bloco 5 — Depoimentos: fundo #003A55 + paleta do título */
+.home #depoimentos { background: #003A55; }
+.home #depoimentos .section-title { color: #FFFFFF; }
+.home #depoimentos .section-title em { color: #B73736; }
+
+/* (9,10,11) Bloco 6 — Localização: fundo branco + card com imagem cheia */
+.home #localizacao { background: #FFFFFF; }
+.home #localizacao .section-title { color: #003A55; }
+.home #localizacao .section-title em { color: #B73736; }
+
+.home .location-unit-card {
+  background: var(--dark2);
+  border: none;
+  border-radius: 0;                 /* (11) cantos quadrados, como os depoimentos */
+  width: 100%;
+  max-width: 400px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.45),
+              inset 0 0 48px rgba(0, 0, 0, 0.28);
+}
+/* Moldura preta metálica em volta do card (mesma da tabela de valores) */
+.home .location-unit-frame {
+  position: relative;
+  width: 100%;
+  max-width: 432px;            /* 400 do card + 2 × 16 da moldura */
+  margin: 0 auto;
+  padding: 16px;               /* espessura da moldura */
+  border-radius: 4px;
+  background: linear-gradient(135deg,
+              #5a5a5a 0%, #1a1a1a 22%, #3a3a3a 50%,
+              #0a0a0a 78%, #2e2e2e 100%);
+  box-shadow:
+    0 32px 70px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+}
+.home .location-unit-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;                   /* (10) imagem ocupa todo o topo do card */
+}
+.home .location-unit-body {
+  background: #003A55;
+  padding: 28px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.home .location-unit-title {
+  font-family: var(--font-condensed);
+  font-size: 24px;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0 0 6px;
+}
+.home .location-unit-contact {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;   /* (4) as duas linhas alinhadas entre si */
+  gap: 10px;
+  margin: 4px auto 0;        /* bloco centralizado no card */
+  text-align: left;
+}
+.home .location-unit-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--gray-light);
+  line-height: 1.4;
+  margin: 0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.home a.location-unit-info:hover { color: #FFFFFF; }
+/* (1.4) Endereço e telefone em negrito para mais destaque */
+.location-unit-info span { font-weight: 700; }
+.home .location-unit-ic {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: #B73736;            /* ícones no vermelho da marca */
+}
+.home .location-unit-btn {
+  background: #B73736 !important;
+  border-color: #B73736 !important;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  margin-top: 18px;
+}
+.home .location-unit-btn:hover {
+  background: #9E2F2E !important;
+  border-color: #9E2F2E !important;
+}
+.home .numbers-strip { background: #003A55; }
+@media (max-width: 600px) {
+  .home .location-unit-frame { padding: 12px; }
+}
+
+/* (14) Bloco 7 — Footer com o mesmo fundo da navbar */
+.home footer { background: #0E1E2C; }
+
+/* (16) Bloco 8 — Rótulo "Agendar Agora" abaixo do WhatsApp */
+.whatsapp-float-wrap {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 998;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+/* Estado oculto (usado pelo JS para esconder o botão no hero, só no mobile) */
+.whatsapp-float-wrap.wa-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(18px);
+  pointer-events: none;
+}
+.whatsapp-float-wrap .whatsapp-float {
+  position: static;
+  bottom: auto;
+  right: auto;
+}
+.whatsapp-float-label {
+  font-family: var(--font-condensed);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 3px 9px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* (6) Carrossel DESKTOP + MOBILE (apenas index) */
+.home .carousel-wrapper { position: relative; overflow: hidden; }
+.home .carousel-track {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 16px !important;
+  grid-template-columns: unset !important;
+  columns: unset !important;
+  margin-top: 0 !important;
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.home .carousel-track > * {
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+.home #carouselServicos .carousel-track > *,
+.home #carouselDepoimentos .carousel-track > * {
+  flex: 0 0 calc((100% - 32px) / 3) !important;
+  max-width: calc((100% - 32px) / 3) !important;
+  min-width: 0 !important;
+  width: auto !important;
+}
+@media (max-width: 992px) {
+  .home #carouselServicos .carousel-track > *,
+  .home #carouselDepoimentos .carousel-track > * {
+    flex-basis: calc((100% - 16px) / 2) !important;
+    max-width: calc((100% - 16px) / 2) !important;
+  }
+}
+@media (max-width: 640px) {
+  .home #carouselServicos .carousel-track > *,
+  .home #carouselDepoimentos .carousel-track > * {
+    flex-basis: 100% !important;
+    max-width: 100% !important;
+  }
+}
+/* Setas posicionadas abaixo dos cards, sem círculo de fundo */
+.home .carousel-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+}
+.home .carousel-btn {
+  display: none; /* exibido via JS (flex) somente quando há overflow */
+  align-items: center;
+  justify-content: center;
+  position: static;
+  transform: none;
+  margin-top: 28px; /* espaço abaixo dos cards; some junto quando a seta está oculta */
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: #003A55;
+  font-size: 34px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: none;
+  transition: color 0.2s, opacity 0.2s, transform 0.2s;
+}
+.home .carousel-btn:hover { background: transparent; color: #B73736; transform: scale(1.18); }
+.home .carousel-btn:disabled { opacity: 0.25; pointer-events: none; }
+.home .carousel-btn-prev,
+.home .carousel-btn-next { left: auto; right: auto; }
+
+/* (1) SERVIÇOS — setas nos cantos (extremidades do bloco) */
+.home #carouselServicos .carousel-controls { justify-content: space-between; }
+
+/* (2) SERVIÇOS — remove o "surgir de baixo" dos cards (animação .reveal),
+   deixando só o deslize horizontal suave do carrossel (track) */
+.home #carouselServicos .carousel-track > *.reveal,
+.home #carouselServicos .carousel-track > *.reveal.visible {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* DEPOIMENTOS — mesmos ajustes do bloco de Serviços */
+/* (1) setas nos cantos */
+.home #carouselDepoimentos .carousel-controls { justify-content: space-between; }
+/* (2) deslize horizontal suave (sem o "surgir de baixo") */
+.home #carouselDepoimentos .carousel-track > *.reveal,
+.home #carouselDepoimentos .carousel-track > *.reveal.visible {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+/* (3) setas sempre brancas (sem mudança de cor no hover) */
+.home #carouselDepoimentos .carousel-btn,
+.home #carouselDepoimentos .carousel-btn:hover { color: #FFFFFF; }
+
+/* ══════════════════════════════════════════════════════════════
+   AJUSTES SOLICITADOS — Marca d'água, Serviços e Tabela de Valores
+══════════════════════════════════════════════════════════════ */
+
+/* (2.1) INDEX — marca d'água "HEBREUS" atrás do card de localização */
+.home #localizacao {
+  position: relative;
+  overflow: hidden;
+}
+.home #localizacao::before {
+  content: 'HEBREUS';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(80px, 18vw, 240px);
+  font-weight: 900;
+  color: rgba(0, 58, 85, 0.06);   /* navy translúcido — visível sobre o fundo branco */
+  white-space: nowrap;
+  letter-spacing: 10px;
+  pointer-events: none;
+  z-index: 0;
+}
+.home #localizacao .section-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* (3.1) SERVIÇOS — bloco "frase" (igual ao SLIDE 3.5 da index), em azul marinho */
+.servicos-quote {
+  background: #003A55;
+}
+.servicos-quote::before {
+  color: rgba(255, 255, 255, 0.08);
+}
+.servicos-quote .quote-text {
+  color: #FFFFFF;
+}
+.servicos-quote .quote-author {
+  color: #FFFFFF;
+}
+.servicos-quote .quote-author-lg {
+  display: block;
+  margin: 22px auto 0;
+  max-width: 860px;
+  font-family: var(--font-display);
+  font-size: clamp(19px, 2.3vw, 30px);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.45;
+  color: #FFFFFF;
+}
+
+/* ══════════════════════════════════════════════════
+   PÁGINA SERVIÇOS — fundo branco, cards azul-marinho
+   (escopo isolado em .page-servicos)
+══════════════════════════════════════════════════ */
+
+/* (6) Fundo do bloco de cards em branco */
+.page-servicos .servicos-section {
+  background: #FFFFFF;
+}
+
+/* Filtros legíveis sobre fundo branco */
+.page-servicos .btn-filtro {
+  border: 1px solid rgba(0, 58, 85, 0.25);
+  color: #003A55;
+}
+.page-servicos .btn-filtro.active,
+.page-servicos .btn-filtro:hover {
+  background: #003A55;
+  color: #FFFFFF;
+  border-color: #003A55;
+}
+
+/* ══════════════════════════════════════════════════
+   (2.1/2.2/2.3) SERVIÇOS — Bloco 2 (frase de impacto):
+   fundo navy #003A55, texto branco, fonte Young Heart.
+══════════════════════════════════════════════════ */
+.page-servicos .quote-banner { background: #003A55; }
+/* (2) aspas duplas decorativas no canto superior esquerdo (igual à frase da index) */
+.page-servicos .quote-banner::before {
+  display: block;
+  color: rgba(255, 255, 255, 0.12);
+}
+/* (1) mesma fonte do texto da frase de impacto da INDEX (Playfair Display) */
+.page-servicos .quote-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #FFFFFF;
+}
+.page-servicos .quote-sub {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: #FFFFFF;
+  font-size: clamp(17px, 2.4vw, 24px);
+  line-height: 1.5;
+  max-width: 720px;
+  margin: 0 auto;
+  opacity: 0.95;
+}
+
+/* ══════════════════════════════════════════════════
+   (1.1) Cards de serviço — MESMO design e tamanho do
+   SLIDE 3 da index (service-icon-card), porém mantendo
+   os dois botões lado a lado, responsivos.
+══════════════════════════════════════════════════ */
+
+/* Lista em grade responsiva (igual ao "look" da index):
+   3 colunas no desktop, 2 em telas médias, 1 por vez (carrossel) no mobile */
+.page-servicos .servicos-lista {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;       /* todos os cards da linha com a mesma altura */
+  gap: 24px;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+@media (max-width: 992px) {
+  .page-servicos .servicos-lista {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Card no padrão da index: azul-marinho, cantos retos, ícone no topo */
+.page-servicos .servico-card {
+  background: #003A55;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0;            /* cantos pontiagudos, igual aos cards da index */
+  flex-direction: column;      /* sobrescreve o layout horizontal antigo */
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 32px;
+  gap: 18px;
+  height: auto;                /* libera a altura fixa antiga (240px) */
+  min-height: 360px;           /* base; a grade iguala as alturas por linha */
+  overflow: visible;
+}
+
+/* Ícone branco no topo (80px), sem o painel lateral antigo */
+.page-servicos .servico-icon-box {
+  flex: 0 0 auto;
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  background: transparent;
+  border-right: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.page-servicos .servico-icon-box svg {
+  width: 100%;
+  height: 100%;
+  color: #FFFFFF;
+  stroke: #FFFFFF;
+}
+.page-servicos .servico-icon-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Conteúdo ocupa o restante e empurra os botões para a base */
+.page-servicos .servico-content {
+  flex: 1 1 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0;                  /* o padding do card já dá o respiro */
+  gap: 14px;
+}
+.page-servicos .servico-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Tipografia idêntica ao SLIDE 3 da index */
+.page-servicos .servico-nome {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 30px;
+  color: #FFFFFF;
+  line-height: 1.1;
+  margin: 0;
+}
+.page-servicos .servico-desc {
+  font-size: 15px;
+  font-weight: 300;
+  color: #FFFFFF;
+  line-height: 1.7;
+  opacity: 0.92;
+  margin: 0;
+}
+
+/* Botões SEMPRE lado a lado, dividindo o espaço, fixados na base do card */
+.page-servicos .servico-btns {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;        /* os dois botões com a mesma altura */
+  gap: 10px;
+  width: 100%;
+  margin-top: auto;            /* gruda os botões na base (cards alinhados) */
+}
+.page-servicos .servico-btns .btn-primary,
+.page-servicos .servico-btns .btn-outline {
+  flex: 1 1 0;
+  background: #B73736;
+  color: #FFFFFF;
+  border: 1px solid #B73736;
+  padding: 12px 10px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  line-height: 1.25;
+  white-space: normal;         /* permite 2 linhas em colunas estreitas */
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+}
+.page-servicos .servico-btns .btn-primary:hover,
+.page-servicos .servico-btns .btn-outline:hover {
+  background: #9e2e2d;
+  color: #FFFFFF;
+  border-color: #9e2e2d;
+  transform: translateY(-1px);
+}
+
+/* Carrossel de serviços — wrapper e setas (setas só no mobile) */
+.servicos-carousel { position: relative; width: 100%; }
+.sv-arrow {
+  display: none;                 /* só no mobile */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: #003A55;
+  color: #FFFFFF;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.sv-arrow.sv-prev { left: 2px; }
+.sv-arrow.sv-next { right: 2px; }
+.sv-arrow.is-disabled { opacity: 0.3; pointer-events: none; }
+
+@media (max-width: 768px) {
+  /* Um card por vez (carrossel horizontal). Setas abaixo dos cards, nos cantos. */
+  .servicos-carousel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "lista lista"
+      "prev  next";
+    column-gap: 16px;
+    row-gap: 4px;
+    padding: 0 5%;     /* recuo lateral (igual às seções da index no mobile) — fundo aparece dos lados */
+  }
+  .page-servicos .servicos-lista {
+    grid-area: lista;
+    min-width: 0;
+    display: flex;               /* sobrescreve o grid do desktop */
+    grid-template-columns: none;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0;
+    padding: 4px 0 14px;
+    margin: 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .page-servicos .servicos-lista::-webkit-scrollbar { display: none; }
+
+  .page-servicos .servico-card {
+    flex: 0 0 100%;              /* ocupa toda a área visível: 1 card por vez */
+    width: 100%;
+    min-height: 0;
+    padding: 32px;               /* mesmo padding interno dos cards da index */
+    scroll-snap-align: center;
+    height: auto;
+  }
+
+  /* Ícone segue no topo (quadrado), igual ao desktop, só um pouco menor */
+  .page-servicos .servico-icon-box {
+    width: 72px;
+    height: 72px;
+    border-bottom: none;
+  }
+  .page-servicos .servico-icon-box svg { width: 100%; height: 100%; }
+  .page-servicos .servico-icon-box img { width: 100%; height: 100%; object-fit: contain; }
+  .page-servicos .servico-content { padding: 0; gap: 12px; }
+  .page-servicos .servico-nome { font-size: 26px; }
+  .page-servicos .servico-desc { font-size: 14px; line-height: 1.6; }
+  .page-servicos .servico-btns { gap: 8px; }
+  .page-servicos .servico-btns .btn-primary,
+  .page-servicos .servico-btns .btn-outline { padding: 11px 12px; font-size: 12px; }
+
+  /* Setas abaixo dos cards, nos cantos, sem círculo (igual ao bloco 4 da index) */
+  .sv-arrow {
+    display: flex;
+    position: static;
+    transform: none;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #003A55;
+    font-size: 34px;
+    margin-top: 8px;
+  }
+  .sv-arrow.sv-prev { grid-area: prev; justify-self: start; }
+  .sv-arrow.sv-next { grid-area: next; justify-self: end; }
+  .sv-arrow:hover { color: #B73736; transform: scale(1.18); }
+}
+
+
+/* ══════════════════════════════════════════════════
+   (8) SERVIÇOS — Bloco da Tabela de Valores
+══════════════════════════════════════════════════ */
+.precos-section {
+  background: #B73736;
+  padding: 90px 8%;
+  position: relative;
+  overflow: hidden;
+}
+.precos-section::before {
+  content: 'HEBREUS';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(90px, 20vw, 300px);
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
+  letter-spacing: 12px;
+  pointer-events: none;
+  z-index: 0;
+}
+.precos-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+}
+/* (2.4) Tabela de Valores — card azul-marinho, fiel à planilha */
+.tabela-valores {
+  --tv-col: 104px;
+  --tv-gap: 6px;
+  background: #003A55;
+  border-radius: 0;            /* cantos pontiagudos */
+  max-width: 500px;            /* menor, deixando o fundo aparecer ao redor */
+  margin: 0 auto;
+  padding: 28px 26px 26px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.30);
+}
+.tv-title {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: clamp(34px, 5.5vw, 52px);
+  line-height: 1.05;
+  margin: 0 0 20px;
+}
+
+.tv-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tv-gap);
+}
+
+.tv-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--tv-col) var(--tv-col);
+  gap: var(--tv-gap);
+}
+
+/* Células brancas (o azul do card aparece nos vãos, separando-as) */
+.tv-nome,
+.tv-preco {
+  background: #FFFFFF;
+  border-radius: 0;
+  padding: 9px 14px;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+}
+.tv-nome {
+  color: #003A55;
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 17px;
+}
+.tv-preco {
+  justify-content: center;
+  font-family: 'Young Heart', var(--font-condensed);
+  font-weight: 400;
+  font-size: 24px;
+  white-space: nowrap;
+}
+.tv-red  { color: #B73736; }
+.tv-navy { color: #003A55; }
+
+/* Cabeçalho "Serviços Extras / Valores / Clube VIP" (texto branco sobre o azul) */
+.tv-grid + .tv-head { margin-top: 22px; }
+.tv-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--tv-col) var(--tv-col);
+  gap: var(--tv-gap);
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+.tv-h-nome,
+.tv-h-col {
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #FFFFFF;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+}
+.tv-h-nome { justify-content: flex-start; }
+.tv-h-col  { justify-content: center; }
+
+/* Observação VIP — quadro branco separado, cantos arredondados, fonte Young Heart */
+.tv-nota {
+  background: #FFFFFF;
+  border-radius: 12px;             /* cantos levemente arredondados */
+  margin: 22px 0 0;                /* separada, logo abaixo do último serviço */
+  padding: 18px 22px;
+  text-align: center;
+  color: #B73736;
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  text-transform: none;            /* Young Heart fica melhor sem caixa-alta */
+  letter-spacing: 0;
+  font-size: clamp(20px, 3vw, 26px);
+  line-height: 1.25;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+}
+
+@media (max-width: 600px) {
+  .precos-section { padding: 56px 7%; }
+  .tabela-valores { --tv-col: 72px; --tv-gap: 5px; padding: 22px 14px; }
+  .tv-nome { font-size: 13px; padding: 8px 9px; letter-spacing: 0; }
+  .tv-preco { font-size: 18px; padding: 8px 4px; }
+  .tv-h-nome, .tv-h-col { font-size: 12px; letter-spacing: 0.5px; }
+  .tv-nota { padding: 14px 14px; }
+}
+
+/* ══════════════════════════════════════════════════
+   (1.2) Tabela de Valores — DOIS cards lado a lado
+   Card 1: Serviços (Corte … Corte Infantil)
+   Card 2: Serviços Extras (Valor / Clube VIP)
+══════════════════════════════════════════════════ */
+
+/* Título geral da seção, acima dos dois cards */
+.precos-title {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: clamp(38px, 6vw, 60px);
+  line-height: 1.05;
+  margin: 0 0 36px;
+}
+
+/* Os dois cards: lado a lado no desktop, mesma altura, centralizados como "quadros" */
+.precos-cards {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;       /* (1.2) ambos com a MESMA altura */
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  max-width: 860px;           /* mais estreito → respiro vermelho ao redor */
+  margin: 0 auto;
+}
+
+/* Cada card herda o visual de .tabela-valores; aqui vira um "quadro" suspenso */
+.precos-cards .tabela-valores {
+  flex: 0 0 auto;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid #000000;  /* (3/4) contorno PRETO */
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.50);  /* sensação de quadro flutuante */
+}
+/* Larguras distintas: o card de extras (3 colunas) precisa ser mais largo */
+.precos-cards .tv-card-servicos { width: 340px; max-width: 100%; }
+.precos-cards .tv-card-extras   { width: 470px; max-width: 100%; --tv-col: 100px; }
+/* O subtítulo de cada card (reaproveita .tv-title, menor que o título geral) */
+.precos-cards .tv-title {
+  font-size: clamp(28px, 4vw, 40px);
+  margin: 0 0 18px;
+}
+
+/* Card 1 tem apenas 1 coluna de preço → linha de 2 colunas */
+.tv-row-2 {
+  grid-template-columns: minmax(0, 1fr) var(--tv-col);
+}
+
+/* A grade mantém a altura natural; a nota fica logo abaixo do último serviço */
+.precos-cards .tv-grid { flex: 0 0 auto; }
+
+/* ── Mobile: cards empilhados (um acima do outro), centralizados ── */
+@media (max-width: 768px) {
+  .precos-cards {
+    flex-direction: column;
+    align-items: center;          /* centraliza os "quadros" na tela */
+    max-width: 500px;
+  }
+  .precos-cards .tv-card-servicos,
+  .precos-cards .tv-card-extras { width: 100%; max-width: 420px; }
+}
+
+/* ══════════════════════════════════════════════════
+   (1.3) Footer com o mesmo fundo da navbar (igual à index)
+══════════════════════════════════════════════════ */
+.page-servicos footer { background: #0E1E2C; }
+
+/* ══════════════════════════════════════════════════
+   BLOCO 3 — QUADRO DE VALORES (quadro único, fiel ao
+   MODELO_QUADRO DE VALORES.png): moldura preta metálica
+   + painel azul-marinho, centralizado no meio do bloco.
+══════════════════════════════════════════════════ */
+
+/* Moldura preta metálica (efeito de quadro emoldurado) */
+.quadro-valores {
+  --qv-col: 104px;            /* largura das colunas de preço */
+  --qv-gap: 6px;             /* vão entre as células (mostra o azul) */
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;            /* centraliza o quadro no meio do bloco */
+  padding: 16px;             /* espessura da moldura */
+  border-radius: 4px;
+  background: linear-gradient(135deg,
+              #5a5a5a 0%, #1a1a1a 22%, #3a3a3a 50%,
+              #0a0a0a 78%, #2e2e2e 100%);
+  box-shadow:
+    0 32px 70px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+}
+
+/* Painel interno azul-marinho */
+.qv-panel {
+  position: relative;
+  background: #003A55;
+  padding: 32px 26px 26px;
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.45),
+    inset 0 0 48px rgba(0, 0, 0, 0.28);
+}
+
+/* Título "Nossos Serviços" */
+.qv-title {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: clamp(34px, 6vw, 56px);
+  line-height: 1.02;
+  margin: 0 0 22px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+/* Listas (linhas com células brancas e vãos azuis) */
+.qv-list { display: flex; flex-direction: column; gap: var(--qv-gap); }
+
+.qv-row {
+  display: grid;
+  gap: var(--qv-gap);
+  align-items: stretch;
+}
+.qv-list-2 .qv-row { grid-template-columns: minmax(0, 1fr) calc(var(--qv-col) * 2 + var(--qv-gap)); }
+.qv-list-3 .qv-row { grid-template-columns: minmax(0, 1fr) var(--qv-col) var(--qv-col); }
+
+/* Células brancas */
+.qv-nome,
+.qv-preco {
+  background: #FFFFFF;
+  padding: 9px 14px;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+}
+.qv-nome {
+  color: #003A55;
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: 19px;
+}
+.qv-preco {
+  justify-content: center;
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-size: 24px;
+  white-space: nowrap;
+}
+.qv-red  { color: #B73736; }
+.qv-navy { color: #003A55; }
+
+/* Cabeçalho "Serviços Extras / Valores / Clube VIP" (texto claro sobre o azul) */
+.qv-extras { position: relative; margin-top: 26px; }
+.qv-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--qv-col) var(--qv-col);
+  gap: var(--qv-gap);
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+.qv-h-nome,
+.qv-h-col {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  color: #DCE3EC;
+  font-size: clamp(18px, 3.2vw, 24px);
+  line-height: 1;
+  display: flex;
+  align-items: flex-end;
+}
+.qv-h-nome { justify-content: flex-start; }
+.qv-h-col  { justify-content: center; text-align: center; }
+
+/* Colchete decorativo à direita da coluna Clube VIP (apenas desktop) */
+.qv-brace {
+  position: absolute;
+  top: 38px;                 /* abaixo do cabeçalho */
+  right: -14px;
+  bottom: -34px;             /* desce em direção à nota */
+  width: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-left: none;
+  pointer-events: none;
+}
+
+/* Nota VIP — caixa branca, texto vermelho condensado */
+.qv-nota {
+  background: #FFFFFF;
+  border-radius: 10px;
+  margin: 26px 0 0;
+  padding: 18px 22px;
+  text-align: center;
+  color: #B73736;
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: clamp(20px, 3.6vw, 28px);
+  line-height: 1.15;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Logo no rodapé do quadro */
+.qv-logo { text-align: center; margin-top: 28px; }
+.qv-logo img {
+  width: clamp(150px, 38%, 210px);
+  height: auto;
+  object-fit: contain;
+}
+
+/* Estrela decorativa no canto inferior direito */
+.qv-spark {
+  position: absolute;
+  right: 14px;
+  bottom: 10px;
+  color: rgba(220, 227, 236, 0.55);
+  font-size: 20px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ── Responsivo ── */
+@media (max-width: 600px) {
+  .precos-section { padding: 48px 0; }     /* margem lateral fica por conta do quadro */
+  .quadro-valores {
+    --qv-col: 70px; --qv-gap: 5px;
+    width: 86vw;                           /* < largura da tela → fundo vermelho aparece */
+    max-width: 380px;
+    margin: 0 auto;                        /* centralizado */
+    padding: 12px;
+  }
+  .qv-panel { padding: 24px 14px 20px; }
+  .qv-nome  { font-size: 15px; padding: 8px 10px; letter-spacing: 0; }
+  .qv-preco { font-size: 19px; padding: 8px 4px; }
+  .qv-brace { display: none; }      /* o colchete some no mobile para não desalinhar */
+}
+
+/* ══════════════════════════════════════════════════
+   AJUSTES — PÁGINA SERVIÇOS
+   (1) Bloco CLUBE VIP: todo o texto em Young Heart e branco
+   (2) Cards de serviço: desktop empilhados em retângulo;
+       mobile com rolagem horizontal suave (sem "surgir por baixo")
+══════════════════════════════════════════════════ */
+
+/* (2a) DESKTOP / TABLET (≥769px): card HORIZONTAL no estilo do modelo —
+   painel do ícone à esquerda; à direita título, descrição e botões empilhados;
+   moldura fina deslocada. Paleta navy/vermelho e ícone SVG atuais mantidos. */
+@media (min-width: 769px) {
+  .page-servicos .servicos-lista {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;   /* desliga o grid de 3 colunas */
+    gap: 34px;
+    width: 100%;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  /* Card horizontal */
+  .page-servicos .servico-card {
+    position: relative;
+    z-index: 0;
+    flex-direction: row;
+    align-items: stretch;          /* painel do ícone ocupa toda a altura */
+    min-height: 220px;
+    padding: 0;                    /* painel e conteúdo controlam o respiro */
+    gap: 0;
+    overflow: visible;
+  }
+
+  /* Painel do ícone à esquerda */
+  .page-servicos .servico-icon-box {
+    flex: 0 0 240px;
+    width: 240px;
+    height: auto;
+    align-self: stretch;
+    background: rgba(0, 0, 0, 0.18);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .page-servicos .servico-icon-box svg { width: 96px; height: 96px; }
+  .page-servicos .servico-icon-box img { width: 96px; height: 96px; object-fit: contain; }
+
+  /* Conteúdo à direita: título → descrição → botões empilhados */
+  .page-servicos .servico-content {
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 16px;
+    padding: 30px 34px;
+  }
+  .page-servicos .servico-textos { gap: 10px; }
+
+  /* Botões lado a lado, abaixo da descrição, largura automática (não esticam) */
+  .page-servicos .servico-btns {
+    width: auto;
+    max-width: none;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    gap: 12px;
+  }
+  .page-servicos .servico-btns .btn-primary,
+  .page-servicos .servico-btns .btn-outline {
+    flex: 0 0 auto;
+    min-width: 0;
+    padding: 12px 22px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+/* (2b) MOBILE (≤768px): mantém 1 card por vez (tamanho atual), mas remove a
+   animação vertical .reveal (que fazia o card "subir") e suaviza a rolagem */
+@media (max-width: 768px) {
+  .page-servicos .servicos-lista {
+    scroll-behavior: smooth;
+  }
+  .page-servicos .servicos-lista .servico-card.reveal,
+  .page-servicos .servicos-lista .servico-card.reveal.visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   AJUSTES — PÁGINA SOBRE NÓS (item 4)
+   Tudo escopado em .sobre para não afetar as demais páginas
+══════════════════════════════════════════════════ */
+
+/* 4.3 — BLOCO História: fundo vermelho da marca */
+.sobre #historia { background: #B73736; }
+.sobre #historia .section-title,
+.sobre #historia .section-title em {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+}
+.sobre #historia .section-title { color: #FFFFFF; }
+.sobre #historia .section-title em { color: #FFFFFF; }
+.sobre #historia .section-body { color: rgba(255, 255, 255, 0.92); }
+.sobre #historia .section-body strong { color: #FFFFFF !important; }
+/* borda deslocada da imagem mais visível sobre o vermelho */
+.sobre #historia .historia-img-wrap > div { border-color: rgba(255, 255, 255, 0.35) !important; }
+
+/* 4.4 — BLOCO Valores: fundo branco */
+.sobre #valores { background: #FFFFFF; }
+
+/* Bloco compacto: remove a altura mínima de tela cheia e o respiro de 100px,
+   ajustando para o tamanho da marcação (item 2) */
+.sobre #valores {
+  min-height: auto;
+  display: block;
+  padding: 72px 0;
+}
+.sobre #valores .section-inner { padding: 0 8%; }
+
+/* 4.5 / 4.6 — Título "Nossos pilares": Young Heart, no tamanho do título de
+   Serviços da index (clamp(40px,6vw,68px)), centralizado no bloco */
+.sobre #valores .valores-header {
+  text-align: center;
+  margin-bottom: 44px;
+}
+.sobre #valores .valores-header .section-title,
+.sobre #valores .section-title {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(40px, 6vw, 68px);
+  line-height: 1.05;
+  color: #003A55;
+  text-align: center;
+  margin-bottom: 0;
+}
+.sobre #valores .section-title em {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1em;
+  display: inline;
+  color: #B73736;
+}
+
+/* 4.5(b) / 4.6(b) / 4.7 — Cards idênticos ao BLOCO 3 (Benefícios) do Hebreus VIP:
+   reaproveitam .vip-benef-card / .vip-benef-title / .vip-benef-desc
+   (sem ícone losango, título em Young Heart). Grid 3 colunas p/ os 3 pilares. */
+.sobre #valores .vip-benef-grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+@media (max-width: 1024px) {
+  .sobre #valores .vip-benef-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .sobre #valores .vip-benef-grid { grid-template-columns: 1fr; }
+}
+
+/* 4.1 — Prova social (numbers-strip) usa o estilo global já existente. */
+
+/* FRASE DE IMPACTO (replicada da index) — fundo vermelho da marca + texto branco */
+.sobre .quote-banner { background: #B73736; }
+.sobre .quote-banner::before { color: rgba(255, 255, 255, 0.10); }
+.sobre .quote-text { color: #FFFFFF; }
+.sobre .quote-author { color: #FFFFFF; }
+
+/* 4.2 — BLOCO Localização replicado da index (fundo branco, card emoldurado
+   metálico + marca d'água "HEBREUS" ao fundo) */
+.sobre #localizacao {
+  background: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+}
+.sobre #localizacao::before {
+  content: 'HEBREUS';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(80px, 18vw, 240px);
+  font-weight: 900;
+  color: rgba(0, 58, 85, 0.06);
+  white-space: nowrap;
+  letter-spacing: 10px;
+  pointer-events: none;
+  z-index: 0;
+}
+.sobre #localizacao .section-inner { position: relative; z-index: 1; }
+.sobre #localizacao .section-title,
+.sobre #localizacao .section-title em {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(40px, 6vw, 68px);
+  line-height: 1.05;
+}
+.sobre #localizacao .section-title { color: #003A55; }
+.sobre #localizacao .section-title em { color: #B73736; font-size: 1em; }
+
+.sobre .location-unit-frame {
+  position: relative;
+  width: 100%;
+  max-width: 432px;
+  margin: 0 auto;
+  padding: 16px;
+  border-radius: 4px;
+  background: linear-gradient(135deg,
+              #5a5a5a 0%, #1a1a1a 22%, #3a3a3a 50%,
+              #0a0a0a 78%, #2e2e2e 100%);
+  box-shadow:
+    0 32px 70px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+}
+.sobre .location-unit-card {
+  background: var(--dark2);
+  border: none;
+  border-radius: 0;
+  width: 100%;
+  max-width: 400px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.45),
+              inset 0 0 48px rgba(0, 0, 0, 0.28);
+}
+.sobre .location-unit-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+.sobre .location-unit-body {
+  background: #003A55;
+  padding: 28px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sobre .location-unit-title {
+  font-family: var(--font-condensed);
+  font-size: 24px;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0 0 6px;
+}
+.sobre .location-unit-contact {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 4px auto 0;
+  text-align: left;
+}
+.sobre .location-unit-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--gray-light);
+  line-height: 1.4;
+  margin: 0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.sobre a.location-unit-info:hover { color: #FFFFFF; }
+.sobre .location-unit-ic {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: #B73736;
+}
+.sobre .location-unit-btn {
+  background: #B73736 !important;
+  border-color: #B73736 !important;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  margin-top: 18px;
+}
+.sobre .location-unit-btn:hover {
+  background: #9E2F2E !important;
+  border-color: #9E2F2E !important;
+}
+.sobre .numbers-strip { background: #003A55; }
+@media (max-width: 600px) {
+  .sobre .location-unit-frame { padding: 12px; }
+}
+
+/* 4.8 — Footer com o mesmo fundo da navbar (igual à index) */
+.sobre footer { background: #0E1E2C; }
+
+/* Footer da página Trabalhe Conosco: cópia fiel da index (mesmo fundo navy) */
+.trabalhe footer { background: #0E1E2C; }
+
+/* ══════════════════════════════════════════════════
+   AJUSTES — PÁGINA TRABALHE CONOSCO (item 5)
+   Tudo escopado em .trabalhe para não afetar as demais páginas
+══════════════════════════════════════════════════ */
+
+/* 5.1 / 5.2 — Frase de impacto no lugar da História: fundo vermelho, texto branco.
+   Alvo .quote-banner.quote-impacto (independe da classe do body, p/ robustez). */
+.quote-banner.quote-impacto { background: #B73736; }
+.quote-banner.quote-impacto::before { color: rgba(255, 255, 255, 0.10); }
+.quote-banner.quote-impacto .quote-text {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(40px, 6vw, 68px);
+  line-height: 1.05;
+  color: #FFFFFF;
+  margin: 0 auto 18px;
+}
+.quote-banner.quote-impacto .quote-lead {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 300;
+  color: #FFFFFF;
+  line-height: 1.7;
+  max-width: 760px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* 5.3 — Seção Benefícios: fundo branco (no HTML) + cores do título.
+   Alvo pelo #id (único da página), independe da classe do body. */
+#beneficios-carreira .section-title,
+#beneficios-carreira .section-title em {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+}
+#beneficios-carreira .section-title { color: #003A55; }
+#beneficios-carreira .section-title em { color: #B73736; }
+
+/* 5.4 — Cards no padrão Benefícios do Hebreus VIP (.vip-benef-card), sem ícone
+   losango e sem numeração, título em Young Heart (já vem do .vip-benef-title).
+   Layout em flex centralizado para acomodar os 5 cards (3 + 2 centralizados). */
+.trabalhe #beneficios-carreira .vip-benef-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.trabalhe #beneficios-carreira .vip-benef-card {
+  flex: 1 1 320px;
+  max-width: 360px;
+}
+@media (max-width: 768px) {
+  .trabalhe #beneficios-carreira .vip-benef-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
+/* 5.5 — Seção Expectativas: fundo #B73736 (no HTML) */
+/* 5.6 — Título do bloco e títulos das expectativas em Young Heart */
+.trabalhe #expectativas .section-title,
+.trabalhe #expectativas .section-title em {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+}
+.trabalhe #expectativas h3 {
+  font-family: 'Young Heart', var(--font-display) !important;
+  font-weight: 400;
+}
+/* contraste do texto de apoio sobre o vermelho */
+.trabalhe #expectativas .section-body { color: rgba(255, 255, 255, 0.9); }
+
+/* ══════════════════════════════════════════════════
+   CTA RECRUTAMENTO — Trabalhe Conosco (baseado no exemplo)
+   Fundo branco, painel #003A55, texto branco Young Heart, botão #B73736
+══════════════════════════════════════════════════ */
+.cta-recruta {
+  background: #FFFFFF;
+  padding: 90px 8%;
+}
+.cta-recruta-card {
+  position: relative;
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 470px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.18);
+}
+
+/* hachura diagonal no canto superior esquerdo */
+.cta-recruta-img {
+  position: relative;
+  flex: 0 0 40%;
+  overflow: hidden;
+  z-index: 1;
+  background: #0D1F3C;
+}
+.cta-recruta-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* painel navy à direita */
+.cta-recruta-panel {
+  flex: 1;
+  background: #003A55;
+  padding: 56px 56px 56px 104px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+.cta-recruta-title {
+  font-family: 'Young Heart', var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(30px, 3.3vw, 52px);
+  line-height: 1.08;
+  color: #FFFFFF;
+  margin: 0 0 22px;
+}
+.cta-recruta-text {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 300;
+  color: #FFFFFF;
+  line-height: 1.7;
+  margin: 0 0 38px;
+  max-width: 520px;
+}
+.cta-recruta-btn {
+  align-self: flex-start;
+  background: #B73736;
+  color: #FFFFFF;
+  font-family: var(--font-condensed);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 18px 42px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.cta-recruta-btn:hover {
+  background-color: #9E2F2E;
+  transform: translateY(-2px);
+}
+
+/* costura foto→painel: listras diagonais brancas + seta preta apontando p/ direita */
+.cta-recruta-seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 40%;
+  width: 180px;
+  transform: translateX(-44%);
+  z-index: 2;
+  pointer-events: none;
+}
+.cta-recruta-stripes,
+.cta-recruta-arrow {
+  position: absolute;
+  inset: 0;
+}
+.cta-recruta-stripes {
+  background: repeating-linear-gradient(45deg, #FFFFFF 0 3px, transparent 3px 13px);
+  clip-path: polygon(0 0, 52% 0, 100% 50%, 52% 100%, 0 100%);
+  opacity: 0.92;
+}
+.cta-recruta-arrow {
+  background: #0D1F3C;
+  clip-path: polygon(40% 0, 80% 0, 100% 50%, 80% 100%, 40% 100%, 60% 50%);
+}
+
+/* responsivo */
+@media (max-width: 860px) {
+  .cta-recruta { padding: 60px 6%; }
+  .cta-recruta-card { flex-direction: column; min-height: 0; }
+  .cta-recruta-img { flex: 0 0 240px; }
+  .cta-recruta-panel { padding: 40px 28px; }
+  .cta-recruta-seam { display: none; }
+  .cta-recruta-title { font-size: clamp(28px, 7vw, 40px); }
+}
+
+/* ══════════════════════════════════════════════════
+   AJUSTES FINAIS
+══════════════════════════════════════════════════ */
+
+/* Item 1 — INDEX: título do BLOCO 4 (Serviços) centralizado */
+.home #servicos .services-header {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Item 3 — HEBREUS VIP: título do BLOCO 3 (Benefícios) centralizado */
+#vip-beneficios .vip-benef-header {
+  text-align: center;
+}
+
+
+/* PLANOS — folga extra em telas pequenas (cabe sem rolagem) */
+@media (max-width: 600px) {
+  #planos { padding-top: 28px; padding-bottom: 28px; }
+  #planos .vip-planos-header { margin-bottom: 14px; }
+  .qv-panel.plano-vip-panel { padding: 50px 22px 24px; }
+}
+
+/* (1.2-fix) Títulos longos do HERO em Serviços e Clube VIP: reduzidos apenas no DESKTOP
+   para não estourarem a altura da tela. Mobile permanece com o tamanho aprovado. */
+@media (min-width: 769px) {
+  .page-servicos .hero-title {
+    font-size: clamp(56px, 11vw, 112px);
+  }
+  .vip .hero-title {
+    font-size: clamp(60px, 12vw, 120px);
+  }
+  /* VIP: "Você" na MESMA linha que "para" — apenas no DESKTOP.
+     No mobile, "Você" volta à linha própria (regra global), como aprovado. */
+  .vip .hero-title em {
+    display: inline;
+    font-size: 1em;
+  }
+}
+
+/* (3.1) Frase de Impacto: elimina o "flash azul" durante o surgimento na rolagem.
+   O fundo do bloco fica SEMPRE visível (sem opacity:0 da animação reveal);
+   apenas o texto interno faz o fade-in ao entrar na tela. Vale p/ INDEX e SOBRE NÓS. */
+.quote-banner.reveal {
+  opacity: 1;
+  transform: none;
+}
+@media (max-width: 992px) {
+  .quote-banner.reveal .quote-text,
+  .quote-banner.reveal .quote-author,
+  .quote-banner.reveal .quote-lead {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .quote-banner.reveal.visible .quote-text,
+  .quote-banner.reveal.visible .quote-author,
+  .quote-banner.reveal.visible .quote-lead {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== (Item 2) Uniformização dos títulos de bloco nas DEMAIS páginas =====
+   Mesmo tamanho (clamp 48–82px) e centralização aplicados na INDEX.
+   O HERO (.hero-title) NÃO é afetado.
+   Blocos de 2 colunas (apresentação) seguem o padrão da index:
+   à esquerda no desktop e centralizados no mobile. */
+
+/* Tamanho uniforme para todos os títulos de bloco (não-HERO) */
+.sobre .section-title,
+.trabalhe .section-title,
+.vip .section-title,
+.vip .vip-benef-heading,
+.vip .faq-heading,
+.page-servicos .qv-title {
+  font-size: clamp(48px, 7vw, 82px) !important;
+}
+
+/* Centralização (desktop + mobile) — títulos de bloco padrão */
+.sobre #valores .section-title,
+.sobre #localizacao .section-title,
+.trabalhe #beneficios-carreira .section-title,
+.trabalhe #expectativas .section-title,
+.vip #vip-beneficios .vip-benef-heading,
+.vip #planos .section-title,
+.vip #faq .faq-heading,
+.page-servicos .qv-title {
+  text-align: center !important;
+}
+
+/* Blocos de 2 colunas (apresentação): esquerda no desktop, centro no mobile */
+.sobre #historia .section-title,
+.vip #clube .section-title {
+  text-align: left !important;
+}
+@media (max-width: 768px) {
+  .sobre #historia .section-title,
+  .vip #clube .section-title {
+    text-align: center !important;
+  }
+}
