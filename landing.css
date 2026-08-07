@@ -344,3 +344,43 @@ body.lp footer .footer-social .social-link {
   width: 48px;
   height: 48px;
 }
+
+/* ══════════════════════════════════════════════════
+   ÂNCORAS — SITELINKS DO GOOGLE ADS
+   Permitem que cada sitelink tenha uma URL final distinta da URL
+   do anúncio, que é o que o Google exige para não bloquear como
+   destino duplicado.
+
+   URLs disponíveis:
+     https://SEU-DOMINIO/#agendar
+     https://SEU-DOMINIO/#depoimentos
+     https://SEU-DOMINIO/#sobre
+     https://SEU-DOMINIO/#numeros
+══════════════════════════════════════════════════ */
+
+/* Marcador invisível usado pela âncora #sobre (ver index.html).
+   O background: none neutraliza a regra "#sobre { background: var(--dark); }"
+   que já existe no style.css e serve à página institucional Sobre Nós. */
+body.lp .anchor-target {
+  display: block;
+  height: 0;
+  background: none !important;
+}
+
+/* Respiro no topo para o bloco não encostar na borda da tela
+   quando o usuário chega direto pela URL com #. */
+body.lp #numeros,
+body.lp #sobre,
+body.lp #depoimentos,
+body.lp #agendar {
+  scroll-margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  body.lp #numeros,
+  body.lp #sobre,
+  body.lp #depoimentos,
+  body.lp #agendar {
+    scroll-margin-top: 12px;
+  }
+}
