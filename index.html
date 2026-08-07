@@ -87,7 +87,7 @@
 </section>
 
 <!-- BLOCO 2: PROVA SOCIAL -->
-<div class="numbers-strip">
+<div class="numbers-strip" id="numeros">
   <div class="number-item reveal">
     <div class="number-val" data-count="1000" data-suffix="+">1000<span class="number-sym">+</span></div>
     <div class="number-label">Atendimentos por Mês</div>   
@@ -107,6 +107,11 @@
 </div>
 
 <!-- BLOCO 3: SOBRE NÓS -->
+<!-- Âncora do sitelink "Sobre Nós" (Google Ads).
+     A seção já usa id="historia", e esse id está amarrado a dezenas de regras
+     no style.css/landing.css — renomear quebraria o bloco. Este marcador de
+     altura zero cria a âncora #sobre sem tocar em nada do layout. -->
+<span id="sobre" class="anchor-target" aria-hidden="true"></span>
 <section id="historia">
   <div class="section-inner">
     <div class="historia-grid">
@@ -252,5 +257,32 @@
 
 <script src="script.js"></script>
 <script src="tracking.js"></script>
+
+<!-- ══════════════════════════════════════════════════
+     REANCORAGEM — SITELINKS DO GOOGLE ADS
+     O navegador pula para o #ancora antes das fontes e imagens
+     terminarem de carregar. Se alguma delas mudar de altura depois,
+     o usuário fica alguns pixels fora do bloco certo. Este trecho
+     reposiciona a rolagem quando tudo já está estável.
+     Bloco isolado: pode ser removido sem afetar o resto da LP.
+══════════════════════════════════════════════════ -->
+<script>
+(function () {
+  var hash = window.location.hash;
+  if (!hash || hash.length < 2) return;
+
+  function reancorar() {
+    try {
+      var alvo = document.querySelector(hash);
+      if (alvo) alvo.scrollIntoView({ behavior: 'instant', block: 'start' });
+    } catch (e) { /* hash inválido como seletor: ignora */ }
+  }
+
+  window.addEventListener('load', function () {
+    reancorar();
+    setTimeout(reancorar, 350);   // margem para o swap das fontes
+  });
+})();
+</script>
 </body>
 </html>
